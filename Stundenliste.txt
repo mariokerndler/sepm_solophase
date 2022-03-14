@@ -1,0 +1,6 @@
+51822845 - Mario Kerndler
+Gesamtsumme der Arbeitszeit: 4h
+
+Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
+11.03.2022 - 3h    - [Preperations]    	- Getting comfortable with the template and get informations about spring boot/angular.
+12.03.2022 - 1h    - [Setup]	       	- Setup git and project.
