@@ -1,28 +1,46 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
-import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(path = "/horses")
 public class HorseEndpoint {
-    private final HorseService service;
-    private final HorseMapper mapper;
+    private static final Logger log = LoggerFactory.getLogger(HorseEndpoint.class);
 
-    public HorseEndpoint(HorseService service, HorseMapper mapper) {
+    private static final String ID_PATH_VARIABLE_NAME = "id";
+
+    private final HorseService service;
+
+    public HorseEndpoint(HorseService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
     @GetMapping
-    public Stream<HorseDto> allHorses() {
-        return service.allHorses().stream()
-                .map(mapper::entityToDto);
+    public ResponseEntity<Stream<HorseDto>> getAllHorses() {
+        log.info("A user requested all horses.");
+        var horseDtos = service.getHorses().stream();
+        return ResponseEntity.ok(horseDtos);
+    }
+
+    @GetMapping("/{" + ID_PATH_VARIABLE_NAME + "}")
+    public ResponseEntity<HorseDto> getHorseById(@PathVariable(ID_PATH_VARIABLE_NAME) Long id) {
+        log.info("A user requested the horse with id '{}.", id);
+        var horseDto = service.getHorseById(id);
+        return ResponseEntity.ok(horseDto);
+    }
+
+    @PostMapping
+    public ResponseEntity<HorseDto> createHorse(@RequestBody HorseDto dto) {
+        log.info("A user is trying to create a new horse.");
+        var addedHorseDto = service.createHorse(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedHorseDto);
     }
 }

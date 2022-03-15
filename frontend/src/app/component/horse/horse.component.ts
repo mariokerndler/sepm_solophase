@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Horse} from '../../dto/horse';
-import {HorseService} from 'src/app/service/horse.service';
+import { Component, OnInit } from '@angular/core';
+import { HorseDto } from '../../dto/horseDto';
+import { HorseService } from 'src/app/service/horse.service';
 
 @Component({
   selector: 'app-horse',
@@ -9,7 +9,7 @@ import {HorseService} from 'src/app/service/horse.service';
 })
 export class HorseComponent implements OnInit {
   search = false;
-  horses: Horse[];
+  horses: HorseDto[];
   error: string = null;
 
   constructor(

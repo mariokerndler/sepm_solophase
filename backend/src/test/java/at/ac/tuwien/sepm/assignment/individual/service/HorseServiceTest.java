@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -18,9 +19,9 @@ public class HorseServiceTest {
 
   @Test
   public void getAllReturnsAllStoredHorses() {
-    List<Horse> horses = horseService.allHorses();
-    assertThat(horses.size()).isEqualTo(1);
-    assertThat(horses.get(0).getId()).isEqualTo(-1);
-    assertThat(horses.get(0).getName()).isEqualTo("Wendy");
+    List<HorseDto> horses = horseService.getHorses();
+    assertThat(horses.size()).isEqualTo(3);
+    assertThat(horses.get(0).id()).isEqualTo(-3);
+    assertThat(horses.get(0).name()).isEqualTo("Lilly");
   }
 }
