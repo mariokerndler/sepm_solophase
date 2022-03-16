@@ -10,7 +10,7 @@ public class Horse {
     private String description;
     private LocalDate birthdate;
     private Gender gender;
-    private Long ownerId;
+    private Long owner;
 
     public Long getId() {
         return id;
@@ -52,11 +52,11 @@ public class Horse {
         this.gender = gender;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public Long getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long trainerId) {
-        this.ownerId = trainerId;
+    public void setOwner(Long trainerId) {
+        this.owner = trainerId;
     }
 }

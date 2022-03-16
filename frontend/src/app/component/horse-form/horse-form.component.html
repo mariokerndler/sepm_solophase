@@ -51,7 +51,7 @@
 
   <div id="button-container" class="ml-auto">
     <button type="submit" class="btn btn-success" [disabled]="!(horseForm.form.valid && horseForm.form.dirty)">
-      Create horse
+      {{formSubmitButtonText}}
     </button>
   </div>
 </form>
@@ -62,8 +62,8 @@
   </div>
 
   <div *ngIf="gotResponse" class="submit-status">
-    <div [hidden]="!successful" class="alert alert-success">Horse created successfully!</div>
-    <div [hidden]="successful" class="alert alert-danger">Could not create horse: {{error.message}}</div>
+    <div [hidden]="!successful" class="alert alert-success">{{responseMessage}}</div>
+    <div [hidden]="successful" class="alert alert-danger">{{responseMessage}}</div>
   </div>
 </div>
 

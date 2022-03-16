@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {catchError, Observable} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HorseDto } from '../dto/horseDto';
 
@@ -31,5 +31,13 @@ export class HorseService {
    */
   create(horse: HorseDto): Observable<HorseDto> {
     return this.http.post<HorseDto>(baseUri, horse);
+  }
+
+  getHorse(id: number): Observable<HorseDto> {
+    return this.http.get<HorseDto>(`${baseUri}/${id}`);
+  }
+
+  updateHorse(id: number, updateHorseDto: HorseDto): Observable<HorseDto> {
+    return this.http.put<HorseDto>(`${baseUri}/${id}`, updateHorseDto);
   }
 }

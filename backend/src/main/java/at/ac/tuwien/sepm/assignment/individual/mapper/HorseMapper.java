@@ -13,7 +13,7 @@ public class HorseMapper {
 
     public HorseDto entityToDto(Horse horse) {
         log.trace("calling entityToDto() ...");
-        return new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthdate(), horse.getGender(), horse.getOwnerId());
+        return new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthdate(), horse.getGender(), horse.getOwner());
     }
 
     public Horse dtoToEntity(HorseDto dto) {
@@ -25,7 +25,15 @@ public class HorseMapper {
         horse.setDescription(dto.description());
         horse.setBirthdate(dto.birthdate());
         horse.setGender(dto.gender());
-        horse.setOwnerId(dto.ownerId());
+        horse.setOwner(dto.ownerId());
         return horse;
+    }
+
+    public void updateFromDto(Horse horse, HorseDto updateHorseDto) {
+        horse.setName(updateHorseDto.name());
+        horse.setDescription(updateHorseDto.description());
+        horse.setBirthdate(updateHorseDto.birthdate());
+        horse.setGender(updateHorseDto.gender());
+        horse.setOwner(updateHorseDto.ownerId());
     }
 }

@@ -39,4 +39,13 @@ public interface HorseDao {
      * @return The newly created {@link Horse horse}.
      */
     Horse create(Horse horse);
+
+    /**
+     * Updates the {@link Horse horse} in the persistent data store.
+     *
+     * @param horse The {@link Horse horse} that will be updated.
+     *
+     * @return The newly updated {@link Horse horse}.
+     */
+    Horse update(Horse horse);
 }

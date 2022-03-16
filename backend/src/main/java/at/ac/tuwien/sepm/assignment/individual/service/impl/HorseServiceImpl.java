@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
-import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
@@ -44,5 +43,17 @@ public class HorseServiceImpl implements HorseService {
         var horse = mapper.entityToDto(dao.create(mapper.dtoToEntity(dto)));
         log.info("Created new horse with id='{}'", horse.id());
         return horse;
+    }
+
+    @Override
+    public HorseDto updateHorse(Long id, HorseDto dto) {
+        log.trace("calling updateHorse() ...");
+
+        var horse = dao.getById(id);
+        mapper.updateFromDto(horse, dto);
+
+        horse = dao.update(horse);
+        log.info("Updated horse with id '{}'", horse.getId());
+        return mapper.entityToDto(horse);
     }
 }

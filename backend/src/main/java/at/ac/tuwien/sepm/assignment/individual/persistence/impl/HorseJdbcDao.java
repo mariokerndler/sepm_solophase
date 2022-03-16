@@ -26,6 +26,7 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_SELECT_ALL = "SELECT * FROM " + TABLE_NAME;
     private static final String SQL_INSERT = "INSERT INTO " + TABLE_NAME + "(name, description, birthdate, gender) VALUES(?, ?, ?, ?)";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+    private static final String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET name=?, description=?, birthdate=?, gender=?, owner=? WHERE id=?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -81,6 +82,40 @@ public class HorseJdbcDao implements HorseDao {
         return horse;
     }
 
+    @Override
+    public Horse update(Horse horse) {
+        log.trace("calling update() ...");
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(conn -> {
+            PreparedStatement ps = conn.prepareStatement(SQL_UPDATE, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, horse.getName());
+
+            if(horse.getDescription() != null) {
+                ps.setString(2, horse.getDescription());
+            }
+            else {
+                ps.setNull(2, Types.VARCHAR);
+            }
+
+            ps.setDate(3, Date.valueOf(horse.getBirthdate()));
+            ps.setString(4, horse.getGender().toString());
+
+            if(horse.getOwner() != null) {
+                ps.setLong(5, horse.getOwner());
+            }
+            else {
+                ps.setNull(5, Types.BIGINT);
+            }
+
+            ps.setLong(6, horse.getId());
+            return ps;
+        }, keyHolder);
+
+        horse.setId(((Number) Objects.requireNonNull(keyHolder.getKeys()).get("id")).longValue());
+        return horse;
+    }
+
     private Horse mapRow(ResultSet result, int rownum) throws SQLException {
         Horse horse = new Horse();
         horse.setId(result.getLong("id"));
@@ -88,7 +123,7 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(result.getString("description"));
         horse.setBirthdate(result.getDate("birthdate").toLocalDate());
         horse.setGender(Gender.valueOf(result.getString("gender")));
-        horse.setOwnerId(result.getLong("owner"));
+        horse.setOwner(result.getLong("owner"));
         return horse;
     }
 }

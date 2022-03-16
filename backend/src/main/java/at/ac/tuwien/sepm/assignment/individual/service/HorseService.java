@@ -33,4 +33,15 @@ public interface HorseService {
      * @return A {@link HorseDto} representing the newly created {@link Horse}.
      */
     HorseDto createHorse(HorseDto dto);
+
+    /**
+     * Updates an existing {@link Horse horse} from an {@link HorseDto}.
+     *
+     * @param id  The {@link Horse#getId() id} of the {@link Horse horse} that is to be updated.
+     * @param dto The {@link HorseDto} that contains the information with which the {@link Horse}
+     *            should be updated. This information must already be validated.
+     *
+     * @return A {@link HorseDto} representing the newly updated {@link Horse}.
+     */
+    HorseDto updateHorse(Long id, HorseDto dto);
 }

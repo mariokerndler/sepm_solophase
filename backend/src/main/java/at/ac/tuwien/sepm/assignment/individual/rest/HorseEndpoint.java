@@ -43,4 +43,11 @@ public class HorseEndpoint {
         var addedHorseDto = service.createHorse(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedHorseDto);
     }
+
+    @PutMapping("/{" + ID_PATH_VARIABLE_NAME + "}")
+    public ResponseEntity<HorseDto> updateHorse(@PathVariable(ID_PATH_VARIABLE_NAME) Long id, @RequestBody HorseDto dto) {
+        log.info("A user is trying to update the horse with id '{}'.", id);
+        var updatedHorse = service.updateHorse(id, dto);
+        return ResponseEntity.ok(updatedHorse);
+    }
 }

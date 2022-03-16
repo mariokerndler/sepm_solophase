@@ -10,6 +10,7 @@ import {HorseComponent} from './component/horse/horse.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HorseFormComponent } from './component/horse-form/horse-form.component';
 import { HorseCreationComponent } from './component/horse-creation/horse-creation.component';
+import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HorseCreationComponent } from './component/horse-creation/horse-creatio
     HorseComponent,
     HorseFormComponent,
     HorseCreationComponent,
+    HorseEditComponent,
   ],
     imports: [
         BrowserModule,
