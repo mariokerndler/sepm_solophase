@@ -1,8 +1,9 @@
 51822845 - Mario Kerndler
-Gesamtsumme der Arbeitszeit: 13h
+Gesamtsumme der Arbeitszeit: 15h
 
 Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 11.03.2022 - 3h    - [Preperations]    	- Getting comfortable with the template and get informations about spring boot/angular.
 12.03.2022 - 1h    - [Setup]	       	- Setup git and project.
 15.03.2022 - 6h    - [US1]		- Added backend REST endpoints for creating a new horse and frontend form/routing.
 16.03.2022 - 3h    - [US2]		- Added backend REST endpoints for updated a given horse and updated frontend creation form to support updating horses.
+17.03.2022 - 2h	   - [US3]		- Implemented backend REST DELETE endpoint for deleting a horse.

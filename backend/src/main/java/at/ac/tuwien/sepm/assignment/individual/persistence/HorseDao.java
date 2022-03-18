@@ -48,4 +48,13 @@ public interface HorseDao {
      * @return The newly updated {@link Horse horse}.
      */
     Horse update(Horse horse);
+
+    /**
+     * Deletes the {@link Horse horse} with the given {@link Horse#getId() id} from the persistent data store.
+     *
+     * @param id The {@link Horse#getId() id} of the {@link Horse horse} which will be deleted.
+     *
+     * @throws NotFoundException When no {@link Horse} with the given id exists.
+     */
+    void deleteHorseById(Long id);
 }

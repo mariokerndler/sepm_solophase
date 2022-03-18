@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
 import java.util.List;
@@ -27,6 +28,7 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_INSERT = "INSERT INTO " + TABLE_NAME + "(name, description, birthdate, gender) VALUES(?, ?, ?, ?)";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
     private static final String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET name=?, description=?, birthdate=?, gender=?, owner=? WHERE id=?";
+    private static final String SQL_DELETE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -114,6 +116,14 @@ public class HorseJdbcDao implements HorseDao {
 
         horse.setId(((Number) Objects.requireNonNull(keyHolder.getKeys()).get("id")).longValue());
         return horse;
+    }
+
+    @Override
+    @Transactional
+    public void deleteHorseById(Long id) {
+        log.trace("calling deleteHorseById() ...");
+        getById(id);
+        jdbcTemplate.update(SQL_DELETE_BY_ID, id);
     }
 
     private Horse mapRow(ResultSet result, int rownum) throws SQLException {

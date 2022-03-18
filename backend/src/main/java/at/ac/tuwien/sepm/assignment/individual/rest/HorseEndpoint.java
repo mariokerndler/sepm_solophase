@@ -50,4 +50,11 @@ public class HorseEndpoint {
         var updatedHorse = service.updateHorse(id, dto);
         return ResponseEntity.ok(updatedHorse);
     }
+
+    @DeleteMapping("/{" + ID_PATH_VARIABLE_NAME + "}")
+    public ResponseEntity<Void> deleteHorse(@PathVariable(ID_PATH_VARIABLE_NAME) Long id) {
+        log.info("A user is trying to delete the horse with id '{}'.", id);
+        service.deleteHorseById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

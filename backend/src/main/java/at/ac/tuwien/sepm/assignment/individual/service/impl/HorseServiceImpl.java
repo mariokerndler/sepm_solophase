@@ -56,4 +56,11 @@ public class HorseServiceImpl implements HorseService {
         log.info("Updated horse with id '{}'", horse.getId());
         return mapper.entityToDto(horse);
     }
+
+    @Override
+    public void deleteHorseById(Long id) {
+        log.trace("calling deleteHorseById() ...");
+        dao.deleteHorseById(id);
+        log.info("Deleted horse with id '{}'", id);
+    }
 }
