@@ -1,8 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence;
 
+import at.ac.tuwien.sepm.assignment.individual.common.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
-import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 
 import java.util.List;
 
@@ -15,8 +14,6 @@ public interface HorseDao {
      * Get all {@link Horse horses} stored in the persistent data store.
      *
      * @return A list of all {@link Horse horses} stored in the persistent data store.
-     *
-     * @throws PersistenceException When an error occurred during the data access.
      */
     List<Horse> getAll();
 
@@ -26,8 +23,6 @@ public interface HorseDao {
      * @param id The {@link Horse#getId()} id} of the {@link Horse horse} to return.
      *
      * @return The specified {@link Horse}.
-     *
-     * @throws NotFoundException When no {@link Horse} with the given id exists.
      */
     Horse getById(Long id);
 

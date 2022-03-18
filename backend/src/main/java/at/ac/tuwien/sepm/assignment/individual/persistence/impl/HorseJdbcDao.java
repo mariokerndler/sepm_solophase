@@ -1,9 +1,8 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
+import at.ac.tuwien.sepm.assignment.individual.common.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
-import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,7 @@ public class HorseJdbcDao implements HorseDao {
         try {
             return jdbcTemplate.query(SQL_SELECT_ALL, this::mapRow);
         } catch (DataAccessException e) {
-            throw new PersistenceException("Could not query all horses", e);
+            throw new NotFoundException("Could not query all horses");
         }
     }
 

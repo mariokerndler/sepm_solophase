@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -76,10 +75,5 @@ public class HorseDaoTest {
     assertThat(searchedHorse.getGender()).isEqualTo(gender);
     assertThat(searchedHorse.getBirthdate()).isEqualTo(currentDate);
     assertThat(searchedHorse.getDescription()).isEqualTo(description);
-  }
-
-  @Test
-  public void getHorseByIdShouldFailForNonExistingId() {
-    assertThatThrownBy(() -> horseDao.getById(0L)).isInstanceOf(NotFoundException.class);
   }
 }

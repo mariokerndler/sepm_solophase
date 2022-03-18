@@ -1,8 +1,9 @@
 package at.ac.tuwien.sepm.assignment.individual.service;
 
+import at.ac.tuwien.sepm.assignment.individual.common.exception.NotFoundException;
+import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 
 import java.util.List;
 
@@ -23,8 +24,6 @@ public interface HorseService {
      * @param id The {@link Horse#getId() id} of the {@link Horse} that will be retrieved.
      *
      * @return The {@link HorseDto} representing the specified {@link Horse}.
-     *
-     * @throws NotFoundException When no {@link Horse} with the given {@link Horse#getId() id} exists.
      */
     HorseDto getHorseById(Long id);
 
@@ -35,7 +34,7 @@ public interface HorseService {
      *
      * @return A {@link HorseDto} representing the newly created {@link Horse}.
      */
-    HorseDto createHorse(HorseDto dto);
+    HorseDto createHorse(AddUpdateHorseDto dto);
 
     /**
      * Updates an existing {@link Horse horse} from an {@link HorseDto}.
@@ -46,7 +45,7 @@ public interface HorseService {
      *
      * @return A {@link HorseDto} representing the newly updated {@link Horse}.
      */
-    HorseDto updateHorse(Long id, HorseDto dto);
+    HorseDto updateHorse(Long id, AddUpdateHorseDto dto);
 
     /**
      * Deletes the {@link Horse} with the given {@link Horse#getId() id}.
