@@ -7,17 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.stream.Stream;
 
+@Validated
 @RestController
 @RequestMapping(path = "/horses")
 public class HorseEndpoint {
     private static final Logger log = LoggerFactory.getLogger(HorseEndpoint.class);
 
-    private static final String ID_PATH_VARIABLE_NAME = "id";
+    public static final String ID_PATH_VARIABLE_NAME = "id";
 
     private final HorseService service;
 
@@ -33,9 +35,9 @@ public class HorseEndpoint {
     }
 
     @GetMapping("/{" + ID_PATH_VARIABLE_NAME + "}")
-    public ResponseEntity<HorseDto> getHorseById(@PathVariable(ID_PATH_VARIABLE_NAME) Long id) {
+    public ResponseEntity<HorseDto> getHorseById(@PathVariable(ID_PATH_VARIABLE_NAME) Long id, @RequestParam(required = false) Integer generations) {
         log.info("A user requested the horse with id '{}.", id);
-        var horseDto = service.getHorseById(id);
+        var horseDto = service.getHorseById(id, generations == null ? 1 : generations);
         return ResponseEntity.ok(horseDto);
     }
 

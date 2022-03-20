@@ -15,4 +15,9 @@ public final class HorseValidationMessages {
     public static final String INVALID_BIRTHDAY_MESSAGE = "The birthday of the horse can't be in the future.";
     public static final String NO_GENDER_MESSAGE = "Every horse must have a gender.";
     public static final String OWNER_NEGATIVE_MESSAGE = "The horse ownerId cant be negative.";
+    public static final String DAM_SIRE_NEGATIVE_MESSAGE = "Id cant be negative.";
+    public static final String INVALID_DAM_GENDER_MESSAGE = "The dam must be a female.";
+    public static final String INVALID_SIRE_GENDER_MESSAGE = "The sire must be a male.";
+    public static final String INVALID_DAM_BIRTHDATE_MESSAGE = "The dam must be older than the horse itself.";
+    public static final String INVALID_SIRE_BIRTHDATE_MESSAGE = "The sire must be older than the horse itself.";
 }

@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit(horseForm)" #horseForm="ngForm">
+<form (ngSubmit)="onSubmit(horseForm)" #horseForm="ngForm" *ngIf="formReady">
   <div class="form-group">
     <label for="name">Name*</label>
     <input type="text"
@@ -11,7 +11,7 @@
            placeholder="Enter a name"
            [(ngModel)]="model.name">
     <div class="alert alert-danger" [hidden]="name.valid || name.untouched">
-      Name is required.
+      Name is required. Valid Characters: A-Z, a-z, 0-9, Ä, Ö, Ü, ä, ö, ü, -, ' '.
     </div>
   </div>
 
@@ -43,10 +43,28 @@
     <label for="description">Description</label>
     <textarea class="form-control"
               id="description"
-              rows="3"
+              rows="4"
               name="description"
               placeholder="Provide a description (optional)"
               [(ngModel)]="model.description"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="dam">Dam</label>
+    <ng-select id="dam" name="dam" [loading]="isLoadingDam" [typeahead]="damSearchTerms$" placeholder="Choose a dam (Optional)" [(ngModel)]="model.damId">
+      <ng-option *ngFor="let dam of dams$ | async" [value]="dam.id">
+        {{dam.name}} (born {{dam.birthdate}})
+      </ng-option>
+    </ng-select>
+  </div>
+
+  <div class="form-group">
+    <label for="sire">Sire</label>
+    <ng-select id="sire" name="sire" [loading]="isLoadingSire" [typeahead]="sireSearchTerms$" placeholder="Choose a sire (Optional)" [(ngModel)]="model.sireId">
+      <ng-option *ngFor="let sire of sires$ | async" [value]="sire.id">
+        {{sire.name}} (born {{sire.birthdate}})
+      </ng-option>
+    </ng-select>
   </div>
 
   <div id="button-container" class="ml-auto">

@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.common.exception.NotFoundExceptio
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data Access Object for horses.
@@ -51,5 +52,7 @@ public interface HorseDao {
      *
      * @throws NotFoundException When no {@link Horse} with the given id exists.
      */
-    void deleteHorseById(Long id);
+    void deleteById(Long id);
+
+    Optional<Horse> findById(Long id);
 }

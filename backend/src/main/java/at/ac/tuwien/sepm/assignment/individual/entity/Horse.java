@@ -10,7 +10,13 @@ public class Horse {
     private String description;
     private LocalDate birthdate;
     private Gender gender;
-    private Long owner;
+    private Long ownerId;
+
+    private Horse dam;
+    private Long damId;
+
+    private Horse sire;
+    private Long sireId;
 
     public Long getId() {
         return id;
@@ -52,11 +58,43 @@ public class Horse {
         this.gender = gender;
     }
 
-    public Long getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(Long trainerId) {
-        this.owner = trainerId;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public Horse getDam() {
+        return dam;
+    }
+
+    public void setDam(Horse dam) {
+        this.dam = dam;
+    }
+
+    public Long getDamId() {
+        return damId;
+    }
+
+    public void setDamId(Long damId) {
+        this.damId = damId;
+    }
+
+    public Horse getSire() {
+        return sire;
+    }
+
+    public void setSire(Horse sire) {
+        this.sire = sire;
+    }
+
+    public Long getSireId() {
+        return sireId;
+    }
+
+    public void setSireId(Long sireId) {
+        this.sireId = sireId;
     }
 }

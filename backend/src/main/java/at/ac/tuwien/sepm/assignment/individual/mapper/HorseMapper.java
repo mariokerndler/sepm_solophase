@@ -15,9 +15,21 @@ public class HorseMapper {
 
     private static final Logger log = LoggerFactory.getLogger(HorseMapper.class);
 
-    public HorseDto entityToDto(Horse horse) {
+    public HorseDto entityToDto(Horse horse, int numOfGenerations) {
         log.trace("calling entityToDto() ...");
-        return new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthdate(), horse.getGender(), horse.getOwner());
+
+        if(horse == null) {
+            return null;
+        }
+
+        HorseDto dam = null, sire = null;
+        if(numOfGenerations > 0) {
+            numOfGenerations--;
+            dam = entityToDto(horse.getDam(), numOfGenerations);
+            sire = entityToDto(horse.getSire(), numOfGenerations);
+        }
+
+        return new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthdate(), horse.getGender(), horse.getOwnerId(), dam, sire);
     }
 
     public Horse dtoToEntity(AddUpdateHorseDto dto) {
@@ -28,7 +40,9 @@ public class HorseMapper {
         horse.setDescription(dto.getDescription());
         horse.setBirthdate(dto.getBirthdate());
         horse.setGender(dto.getGender());
-        horse.setOwner(dto.getOwnerId());
+        horse.setOwnerId(dto.getOwnerId());
+        horse.setSireId(dto.getSireId());
+        horse.setDamId(dto.getDamId());
         return horse;
     }
 
@@ -39,6 +53,8 @@ public class HorseMapper {
         horse.setDescription(updateHorseDto.getDescription());
         horse.setBirthdate(updateHorseDto.getBirthdate());
         horse.setGender(updateHorseDto.getGender());
-        horse.setOwner(updateHorseDto.getOwnerId());
+        horse.setOwnerId(updateHorseDto.getOwnerId());
+        horse.setSireId(updateHorseDto.getSireId());
+        horse.setDamId(updateHorseDto.getDamId());
     }
 }

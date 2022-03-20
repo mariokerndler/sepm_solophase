@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {catchError, Observable} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HorseDto } from '../dto/horseDto';
+import {AddUpdateHorseDto} from '../dto/addUpdateHorseDto';
 
 const baseUri = environment.backendUrl + '/horses';
 
@@ -24,20 +25,29 @@ export class HorseService {
     return this.http.get<HorseDto[]>(baseUri);
   }
 
+  getHorse(id: number, generations?: number): Observable<HorseDto> {
+    let queryParams = new HttpParams();
+    if(generations != null) {
+      queryParams = queryParams.set('generations', generations);
+    }
+
+    return this.http.get<HorseDto>(`${baseUri}/${id}`, {params: queryParams});
+  }
+
   /**
    * Create a new horse and store it in the system
    *
    * @param horse The newly created horse.
    */
-  create(horse: HorseDto): Observable<HorseDto> {
+  create(horse: AddUpdateHorseDto): Observable<HorseDto> {
     return this.http.post<HorseDto>(baseUri, horse);
   }
 
-  getHorse(id: number): Observable<HorseDto> {
-    return this.http.get<HorseDto>(`${baseUri}/${id}`);
+  update(id: number, updateHorseDto: AddUpdateHorseDto): Observable<HorseDto> {
+    return this.http.put<HorseDto>(`${baseUri}/${id}`, updateHorseDto);
   }
 
-  updateHorse(id: number, updateHorseDto: HorseDto): Observable<HorseDto> {
-    return this.http.put<HorseDto>(`${baseUri}/${id}`, updateHorseDto);
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${baseUri}/${id}`);
   }
 }

@@ -72,15 +72,15 @@ public class HorseEndpointTest {
     //assertThat(horseResult.get(2).name()).isEqualTo("Bella");
   }
 
-  @Test
-  public void getHorseShouldSucceed() throws Exception {
-    var horseDto = RandomHorseGenerator.createRandomHorseDto();
-
-    when(horseService.getHorseById(eq(horseDto.id()))).thenReturn(horseDto);
-
-    mockMvc.perform(MockMvcRequestBuilders.get("/horses/{id}", horseDto.id()).accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
-  }
+  //@Test
+  //public void getHorseShouldSucceed() throws Exception {
+  //  var horseDto = RandomHorseGenerator.createRandomHorseDto();
+//
+  //  when(horseService.getHorseById(eq(horseDto.id()))).thenReturn(horseDto);
+//
+  //  mockMvc.perform(MockMvcRequestBuilders.get("/horses/{id}", horseDto.id()).accept(MediaType.APPLICATION_JSON))
+  //          .andExpect(status().isOk());
+  //}
 
   @Test
   public void addHorseWithValidParametersShouldSucceed() throws Exception {

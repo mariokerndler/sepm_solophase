@@ -21,6 +21,8 @@ public final class RandomHorseGenerator {
                 createRandomString(),
                 createRandomBirthdate(),
                 random.nextBoolean() ? Gender.MALE : Gender.FEMALE,
+                null,
+                null,
                 null
         );
     }
@@ -33,6 +35,8 @@ public final class RandomHorseGenerator {
                 null,
                 createRandomString(),
                 createRandomBirthdate(),
+                null,
+                null,
                 null,
                 null
         );

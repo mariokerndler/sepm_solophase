@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.dto;
 
+import at.ac.tuwien.sepm.assignment.individual.common.validation.HorseRelationships;
 import at.ac.tuwien.sepm.assignment.individual.common.validation.NotNullWhenAdding;
 import at.ac.tuwien.sepm.assignment.individual.common.validation.NullOrNotBlank;
 import at.ac.tuwien.sepm.assignment.individual.common.validation.NullOrNotInFuture;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 /**
  * A container for adding or updating a horse, using Validators to check input.
  */
+@HorseRelationships
 public class AddUpdateHorseDto {
     @Size(max = HorseValidationMessages.MAX_NAME_LENGTH, message = HorseValidationMessages.NAME_TOO_LONG_MESSAGE)
     @Pattern(regexp = "[ÄÖÜA-Zäöüa-z0-9\\- ]*", message = HorseValidationMessages.INVALID_NAME_MESSAGE)
@@ -33,6 +35,12 @@ public class AddUpdateHorseDto {
 
     @Min(value = 0, message = HorseValidationMessages.OWNER_NEGATIVE_MESSAGE)
     private Long ownerId;
+
+    @Min(value = 0, message = HorseValidationMessages.DAM_SIRE_NEGATIVE_MESSAGE)
+    private Long damId;
+
+    @Min(value = 0, message = HorseValidationMessages.DAM_SIRE_NEGATIVE_MESSAGE)
+    private Long sireId;
 
     public String getName() {
         return name;
@@ -72,5 +80,21 @@ public class AddUpdateHorseDto {
 
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public Long getDamId() {
+        return damId;
+    }
+
+    public void setDamId(Long damId) {
+        this.damId = damId;
+    }
+
+    public Long getSireId() {
+        return sireId;
+    }
+
+    public void setSireId(Long sireId) {
+        this.sireId = sireId;
     }
 }

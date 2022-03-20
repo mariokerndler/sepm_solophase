@@ -22,10 +22,11 @@ public interface HorseService {
      * Retrieves an existing {@link Horse horse} with the given {@link Horse#getId() id}
      *
      * @param id The {@link Horse#getId() id} of the {@link Horse} that will be retrieved.
+     * @param numberOfGeneration Number of generations to include.
      *
      * @return The {@link HorseDto} representing the specified {@link Horse}.
      */
-    HorseDto getHorseById(Long id);
+    HorseDto getHorseById(Long id, int numberOfGeneration);
 
     /**
      * Creates a new {@link Horse horse}.

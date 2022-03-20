@@ -6,4 +6,6 @@ export interface HorseDto {
   description?: string;
   birthdate: Date;
   gender: Gender;
+  dam?: HorseDto;
+  sire?: HorseDto;
 }

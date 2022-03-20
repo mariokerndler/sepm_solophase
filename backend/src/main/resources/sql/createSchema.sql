@@ -5,5 +5,7 @@ CREATE TABLE IF NOT EXISTS horse
     description   VARCHAR(255) NULL,
     birthdate     DATE NOT NULL,
     gender        ENUM('MALE','FEMALE') NOT NULL,
-    owner         BIGINT NULL
+    ownerId       BIGINT NULL,
+    damId         BIGINT NULL,
+    sireId        BIGINT NULL
 );

@@ -11,6 +11,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { HorseFormComponent } from './component/horse-form/horse-form.component';
 import { HorseCreationComponent } from './component/horse-creation/horse-creation.component';
 import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HorseEditComponent } from './component/horse-edit/horse-edit.component'
         HttpClientModule,
         NgbModule,
         ReactiveFormsModule,
+        NgSelectModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

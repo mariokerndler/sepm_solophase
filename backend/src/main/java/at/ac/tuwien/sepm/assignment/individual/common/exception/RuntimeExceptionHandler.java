@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -18,8 +19,8 @@ import java.util.HashMap;
  * Handles exception handling for all layers.
  */
 @ControllerAdvice
-public class ExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(ExceptionHandler.class);
+public class RuntimeExceptionHandler extends ResponseEntityExceptionHandler {
+    private static final Logger log = LoggerFactory.getLogger(RuntimeExceptionHandler.class);
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -40,5 +41,10 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.debug("Returning HTTP 400 Bad Request", ex);
         return super.handleHttpMessageNotReadable(ex, headers, status, request);
+    }
+
+    @ExceptionHandler(HorseRelationshipException.class)
+    protected ResponseEntity<Object> handleHorseRelationshipException(HorseRelationshipException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getErrors());
     }
 }
