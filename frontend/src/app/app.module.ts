@@ -3,24 +3,26 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HeaderComponent} from './component/header/header.component';
+import {HeaderComponent} from './component/common/header/header.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HorseComponent} from './component/horse/horse.component';
+import {HorseListComponent} from './component/horse/horse-list/horse-list.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HorseFormComponent } from './component/horse-form/horse-form.component';
-import { HorseCreationComponent } from './component/horse-creation/horse-creation.component';
-import { HorseEditComponent } from './component/horse-edit/horse-edit.component';
+import { HorseFormComponent } from './component/horse/horse-form/horse-form.component';
+import { HorseCreationComponent } from './component/horse/horse-creation/horse-creation.component';
+import { HorseEditComponent } from './component/horse/horse-edit/horse-edit.component';
 import {NgSelectModule} from '@ng-select/ng-select';
+import { HorseDetailComponent } from './component/horse/horse-detail/horse-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HorseComponent,
+    HorseListComponent,
     HorseFormComponent,
     HorseCreationComponent,
     HorseEditComponent,
+    HorseDetailComponent,
   ],
     imports: [
         BrowserModule,

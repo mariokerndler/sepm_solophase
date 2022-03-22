@@ -1,5 +1,5 @@
 51822845 - Mario Kerndler
-Gesamtsumme der Arbeitszeit: 26h
+Gesamtsumme der Arbeitszeit: 32h
 
 Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 11.03.2022 - 3h    - [Preperations]    	- Getting comfortable with the template and get informations about spring boot/angular.
@@ -10,3 +10,4 @@ Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 18.03.2022 - 2h	   - [Research, TS16]	- Researching on how annotations work in java and how to implement validation using annotations.
 18.03.2022 - 3h    - [US1, US2, TS16]   - Implemented validation using custom annotations and added a exception handler for better message output.
 19.03.2022 - 6h    - [US4, US5, TS16]   - Added backend and frontend support for adding/updating parents. Implemented Validation for parents.
+20.03.2022 - 6h	   - [US6]		- Implemented detail page for horses and added SweetAlerts for notifications.

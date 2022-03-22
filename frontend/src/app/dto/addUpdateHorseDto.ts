@@ -5,8 +5,7 @@ export class AddUpdateHorseDto {
   description?: string;
   birthdate: Date;
   gender: Gender;
+  ownerId?: number;
   damId?: number;
   sireId?: number;
-
-  constructor() {}
 }

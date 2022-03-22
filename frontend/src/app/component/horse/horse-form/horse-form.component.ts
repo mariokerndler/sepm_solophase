@@ -1,11 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, NgForm } from '@angular/forms';
-import { HorseService } from 'src/app/service/horse.service';
-import {HorseDto} from '../../dto/horseDto';
-import {Gender} from '../../dto/gender';
+import {FormBuilder, NgForm} from '@angular/forms';
+import {HorseService} from 'src/app/service/horse.service';
+import {HorseDto} from '../../../dto/horseDto';
+import {Gender} from '../../../dto/gender';
 import {Observable, Subject} from 'rxjs';
-import {AddUpdateHorseDto} from '../../dto/addUpdateHorseDto';
-import {HttpErrorResponse} from '@angular/common/http';
+import {AddUpdateHorseDto} from '../../../dto/addUpdateHorseDto';
+import {NotificationService} from '../../../service/notification.service';
+import {Router} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-horse-form',
@@ -20,10 +22,6 @@ export class HorseFormComponent implements OnInit {
   genders = Object.values(Gender);
 
   formSubmitButtonText: string;
-  sent: boolean;
-  gotResponse: boolean;
-  successful: boolean;
-  responseMessage: string;
 
   dams$: Observable<HorseDto[]>;
   isLoadingDam = false;
@@ -33,11 +31,18 @@ export class HorseFormComponent implements OnInit {
   isLoadingSire = false;
   sireSearchTerms$ = new Subject<string>();
 
-  constructor(private fb: FormBuilder, private horseService: HorseService) {}
+  createAnother = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private horseService: HorseService,
+    private notificationService: NotificationService,
+    private router: Router,
+    private location: Location
+  ) {}
 
   private static createModelFromHorseDto(horse: HorseDto): AddUpdateHorseDto {
-    console.log(horse);
-    const addUpdateHorseModel: AddUpdateHorseDto = {
+    return {
       name: horse.name,
       description: horse?.description,
       birthdate: horse.birthdate,
@@ -45,8 +50,6 @@ export class HorseFormComponent implements OnInit {
       damId: horse.dam?.id,
       sireId: horse.sire?.id
     };
-    console.log(addUpdateHorseModel);
-    return addUpdateHorseModel;
   }
 
   ngOnInit(): void {
@@ -54,7 +57,7 @@ export class HorseFormComponent implements OnInit {
 
     if(this.isUpdateForm()) {
       this.horseService
-        .getHorse(this.horseId)
+        .getHorse(this.horseId, null, () => this.navigateToHorseList())
         .subscribe(horse => this.onModelLoaded(HorseFormComponent.createModelFromHorseDto(horse)));
     }
     else {
@@ -66,52 +69,31 @@ export class HorseFormComponent implements OnInit {
     (this.isUpdateForm()
       ? this.horseService.update(this.horseId, this.model)
       : this.horseService.create(this.model)
-    )
-      .subscribe({
-        next: (_) => {
-          this.gotResponse = true;
-          this.successful = true;
-          this.responseMessage = this.createResponseMessage();
-        },
-        error: (err) => {
-          this.gotResponse = true;
-          this.successful = false;
-          this.responseMessage = this.createResponseMessage(err);
-        }
+    ).subscribe( (_) => {
+      if(this.createAnother) {
+        form.resetForm();
+      }
+      else {
+        this.navigateToHorseList();
+      }
     });
+  }
 
-    this.sent = true;
-    form.resetForm();
+  goBack() {
+    this.location.back();
   }
 
   private isUpdateForm(): boolean {
     return !!this.horseId;
   }
 
-  private createResponseMessage(err?: any): string {
-    let msg: string;
-
-    if(err) {
-      const message = err.error.message || JSON.stringify(err.error).replace(/[{}]/g, '');
-
-      if(this.isUpdateForm()) {
-        msg = `Could not update horse with id="${this.horseId}": ${message}`;
-      }
-      else {
-        msg = `Could not create horse: ${message}`;
-      }
-    }
-    else {
-      if(this.isUpdateForm()) {
-        msg = 'Horse updated successfully!';
-      }
-      else {
-        msg = 'Horse created successfully!';
-      }
-    }
-
-    return msg;
+  private navigateToHorseList() {
+    this.router.navigate(['/horses'])
+      .catch((reason) => {
+        this.notificationService.notifyError(reason.toString());
+      });
   }
+
   private onModelLoaded(model: AddUpdateHorseDto) {
     this.model = model;
     this.loadDamAndSearch();

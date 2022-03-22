@@ -1,0 +1,59 @@
+<h2>Horse Details</h2>
+
+<div id="detail-container" *ngIf="horse">
+  <ng-template #none><i>None</i></ng-template>
+  <ng-template #notSet><i>Not set</i></ng-template>
+  <ng-template #description>
+    <textarea [value]="horse.description" disabled></textarea>
+  </ng-template>
+  <ng-template #dam>
+    {{horse.dam?.name}}
+    <button class="btn btn-secondary btn-sm" routerLink="/horses/{{horse.dam?.id}}/detail" style="cursor: pointer">View</button>
+  </ng-template>
+  <ng-template #sire>
+    {{horse.sire?.name}}
+    <button class="btn btn-secondary btn-sm" routerLink="/horses/{{horse.sire?.id}}/detail" style="cursor: pointer">View</button>
+  </ng-template>
+
+  <div class="detail-row">
+    <label for="name">Name:</label>
+    <span id="name">{{horse.name}}</span>
+  </div>
+
+  <div class="d-flex detail-row" [ngClass]="{'flex-column' : horse.description}">
+    <label for="description">Description:</label>
+    <div id="description" *ngIf="horse.description; then description else none"></div>
+  </div>
+
+  <div class="detail-row">
+    <label for="birthdate">Birthdate:</label>
+    <span id="birthdate">{{horse.birthdate}}</span>
+  </div>
+
+  <div class="detail-row">
+    <label for="gender">Gender:</label>
+    <span id="gender">{{horse.gender}}</span>
+  </div>
+
+  <div class="detail-row">
+    <label for="dam">Dam:</label>
+    <span id="dam" *ngIf="horse.dam?.name; then dam else notSet"></span>
+  </div>
+
+  <div class="detail-row">
+    <label for="sire">Sire:</label>
+    <span id="sire" *ngIf="horse.sire?.name; then sire else notSet"></span>
+  </div>
+
+  <div class="d-flex justify-content-end mt-2">
+    <button type="button" class="btn btn-secondary" (click)="editHorse()">
+      Edit
+    </button>
+    <button type="button" class="btn btn-danger ms-1" (click)="deleteHorse()">
+      Delete
+    </button>
+    <button type="button" class="btn btn-secondary ms-1" (click)="goBack()">
+      Go Back
+    </button>
+  </div>
+</div>

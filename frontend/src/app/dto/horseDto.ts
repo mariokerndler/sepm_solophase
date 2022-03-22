@@ -1,4 +1,5 @@
 import { Gender } from './gender';
+import {OwnerDto} from './owner';
 
 export interface HorseDto {
   id?: number;
@@ -6,6 +7,7 @@ export interface HorseDto {
   description?: string;
   birthdate: Date;
   gender: Gender;
+  owner?: OwnerDto;
   dam?: HorseDto;
   sire?: HorseDto;
 }
