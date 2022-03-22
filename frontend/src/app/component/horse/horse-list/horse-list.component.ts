@@ -1,28 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { HorseDto } from '../../../dto/horseDto';
 import { HorseService } from 'src/app/service/horse.service';
-import { Router} from '@angular/router';
-import {NotificationService} from "../../../service/notification.service";
+import {ActivatedRoute, Router} from '@angular/router';
+import {NotificationService} from '../../../service/notification.service';
+import {HorseSearchDto} from '../../../dto/horseSearchDto';
+import {debounceTime, distinctUntilChanged, fromEvent, merge, Subscription, tap} from 'rxjs';
+import {SearchService} from '../../../service/search.service';
+import {NgSelectComponent} from '@ng-select/ng-select';
+import {Gender} from "../../../dto/gender";
 
 @Component({
   selector: 'app-horse',
   templateUrl: './horse-list.component.html',
   styleUrls: ['./horse-list.component.scss']
 })
-export class HorseListComponent implements OnInit {
-  search = false;
+export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @ViewChild('nameSearch') nameSearch: ElementRef;
+  @ViewChild('descriptionSearch') descriptionSearch: ElementRef;
+  @ViewChild('bornAfterSearch') bornAfterSearch: ElementRef;
+  @ViewChild('genderSearch') genderSearch: NgSelectComponent;
+
   horses: HorseDto[];
-  error: string = null;
+  genders = Object.values(Gender);
+  isLoading: boolean;
+
+  searchParameter: HorseSearchDto = new HorseSearchDto();
+
+  private routeSearchQuerySubscription: Subscription;
+  private searchSubscription: Subscription;
 
   constructor(
     private service: HorseService,
     private router: Router,
+    private route: ActivatedRoute,
+    private horseService: HorseService,
+    private searchService: SearchService,
     private notificationService: NotificationService
   ) {
   }
 
   ngOnInit(): void {
     this.reloadHorses();
+
+    this.routeSearchQuerySubscription = this.route.queryParams
+      .subscribe( (params) => {
+        this.searchParameter.name = params.name;
+        this.searchParameter.description = params.description;
+        this.searchParameter.gender = params.gender;
+        this.searchWithCurrentFilter();
+      });
+  }
+
+  ngAfterViewInit() {
+    this.registerSearchQueries();
+  }
+
+  ngOnDestroy() {
+    this.searchSubscription.unsubscribe();
+    this.routeSearchQuerySubscription.unsubscribe();
   }
 
   reloadHorses() {
@@ -34,6 +70,11 @@ export class HorseListComponent implements OnInit {
         this.notificationService.notifyFailedOperation('Fetching horses')(error);
       }
     });
+  }
+
+  resetSearchQuery() {
+    this.searchParameter = new HorseSearchDto();
+    this.setSearchQueryParams();
   }
 
   createHorse() {
@@ -63,5 +104,38 @@ export class HorseListComponent implements OnInit {
     this.router
       .navigate(['/horses', id, 'detail'])
       .catch((err) =>  this.notificationService.notifyError(err.toString()));
+  }
+
+  private searchWithCurrentFilter() {
+    this.isLoading = true;
+    this.horseService.search(this.searchParameter)
+      .pipe(
+        tap(_ => this.isLoading = false))
+      .subscribe(horses => this.horses = horses);
+  }
+
+  private setSearchQueryParams() {
+    this.router.navigate([], { queryParams: {
+        name: this.searchParameter.name?.length ? this.searchParameter.name : null,
+        description:  this.searchParameter.description?.length ? this.searchParameter.description : null,
+        bornAfter: this.searchParameter.bornAfter?.length ? this.searchParameter.bornAfter : null,
+        gender: this.searchParameter.gender
+      }
+    }).catch( (reason) => this.notificationService.notifyError(reason.toString()));
+  }
+
+  private registerSearchQueries() {
+    this.searchSubscription = merge(
+      fromEvent(this.nameSearch.nativeElement, 'input')
+        .pipe(debounceTime(500)),
+      fromEvent(this.descriptionSearch.nativeElement, 'input')
+        .pipe(debounceTime(500)),
+      fromEvent(this.bornAfterSearch.nativeElement, 'input')
+        .pipe(debounceTime(500)),
+      this.genderSearch.changeEvent.asObservable()
+    ).pipe(
+      distinctUntilChanged(),
+      tap( _ => this.setSearchQueryParams())
+    ).subscribe();
   }
 }

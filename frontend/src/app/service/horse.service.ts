@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { HorseDto } from '../dto/horseDto';
 import {AddUpdateHorseDto} from '../dto/addUpdateHorseDto';
 import {NotificationService} from './notification.service';
+import {HorseSearchDto} from '../dto/horseSearchDto';
 
 const baseUri = environment.backendUrl + '/horses';
 
@@ -103,5 +104,27 @@ export class HorseService {
         tap((_) => {
           this.notificationService.notifySuccess('Successfully deleted horse!');
         }));
+  }
+
+  /**
+   * Search for all {@link HorseDto horses} that fit the given {@link HorseSearchDto}.
+   *
+   * @param filter A {@link HorseSearchDto} specifying which the filter parameter.
+   *
+   * @return observable containing all found horses.
+   */
+  search(filter: HorseSearchDto): Observable<HorseDto[]> {
+    let queryParameters = new HttpParams();
+    const filterObject = Object.entries(filter);
+
+    for(const [key, value] of filterObject) {
+      if (value == null) { continue; }
+      queryParameters = queryParameters.set(key, value);
+    }
+
+    return this.http.get<HorseDto[]>(baseUri, { params: queryParameters })
+      .pipe(
+        catchError(this.notificationService.notifyFailedOperation<HorseDto[]>('Searching horses'))
+      );
   }
 }

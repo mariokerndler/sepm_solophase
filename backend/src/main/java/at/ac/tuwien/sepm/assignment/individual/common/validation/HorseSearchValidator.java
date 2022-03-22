@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.assignment.individual.common.validation;
 
 import at.ac.tuwien.sepm.assignment.individual.common.exception.HorseSearchException;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
-import at.ac.tuwien.sepm.assignment.individual.dto.validation.HorseValidationMessages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -4,7 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.common.validation.HorseRelationsh
 import at.ac.tuwien.sepm.assignment.individual.common.validation.NotNullWhenAdding;
 import at.ac.tuwien.sepm.assignment.individual.common.validation.NullOrNotBlank;
 import at.ac.tuwien.sepm.assignment.individual.common.validation.NullOrNotInFuture;
-import at.ac.tuwien.sepm.assignment.individual.dto.validation.HorseValidationMessages;
+import at.ac.tuwien.sepm.assignment.individual.common.validation.HorseValidationMessages;
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
 
 import javax.validation.constraints.Min;

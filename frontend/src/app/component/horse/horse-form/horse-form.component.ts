@@ -8,6 +8,7 @@ import {AddUpdateHorseDto} from '../../../dto/addUpdateHorseDto';
 import {NotificationService} from '../../../service/notification.service';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {HorseSearchDto} from '../../../dto/horseSearchDto';
 
 @Component({
   selector: 'app-horse-form',
@@ -102,10 +103,16 @@ export class HorseFormComponent implements OnInit {
   }
 
   private loadDamAndSearch() {
-    this.dams$ = this.horseService.getAll();
+    const filter = new HorseSearchDto();
+    filter.limit = 5;
+    filter.gender = Gender.female;
+    this.dams$ = this.horseService.search(filter);
   }
 
   private loadSiresAndSearch() {
-    this.sires$ = this.horseService.getAll();
+    const filter = new HorseSearchDto();
+    filter.limit = 5;
+    filter.gender = Gender.male;
+    this.sires$ = this.horseService.search(filter);
   }
 }

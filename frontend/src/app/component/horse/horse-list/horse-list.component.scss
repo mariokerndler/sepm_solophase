@@ -14,3 +14,46 @@
 .btn-spacing {
   margin-right: 0.5rem;
 }
+
+.search-title-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.search-container {
+  display: flex;
+  padding: 10px;
+  background: lightgrey;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.search-controls-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: 1 1 auto;
+}
+
+.search-row:last-of-type {
+  flex: 1 1 auto;
+}
+
+#name-search {
+  width: 200px;
+}
+
+#born-after-search {
+  width: 120px;
+}
+
+#gender-search {
+  width: 120px;
+}

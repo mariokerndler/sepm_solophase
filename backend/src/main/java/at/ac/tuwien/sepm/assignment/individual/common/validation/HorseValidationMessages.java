@@ -1,4 +1,4 @@
-package at.ac.tuwien.sepm.assignment.individual.dto.validation;
+package at.ac.tuwien.sepm.assignment.individual.common.validation;
 
 /**
  * A container for all validation messages. For easier management.
