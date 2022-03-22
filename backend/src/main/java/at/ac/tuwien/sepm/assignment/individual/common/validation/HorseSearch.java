@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.common.validation;
 
-import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -10,13 +10,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Validator for {@link AddUpdateHorseDto}.
- * Validates the parents (if given) for the horse, by checking their gender and birthdate.
+ * Validator used to validate {@link HorseSearchDto}'s
+ * See {@link HorseSearchValidator } for the implementation.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = HorseRelationshipsValidator.class)
-public @interface HorseRelationships {
+@Constraint(validatedBy = HorseSearchValidator.class)
+public @interface HorseSearch {
     String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

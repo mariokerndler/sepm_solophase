@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
@@ -26,10 +27,12 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public List<HorseDto> getHorses() {
+    public List<HorseDto> getHorses(HorseSearchDto searchDto) {
         log.trace("calling getHorses() ...");
-        var horses = dao.getAll().stream().map(horse -> mapper.entityToDto(horse, 0)).toList();
-        log.info("Retrieved all horses ({})", horses.size());
+        var horses = dao.getAll(searchDto).stream().map(horse -> mapper.entityToDto(horse, 0)).toList();
+        log.info("Retrieved all horses{} ({})",
+                !searchDto.isEmpty() ? (" matching the search request: " + searchDto) : "",
+                horses.size());
         return horses;
     }
 

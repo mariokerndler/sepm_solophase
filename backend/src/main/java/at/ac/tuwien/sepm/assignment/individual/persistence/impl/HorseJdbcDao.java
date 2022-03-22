@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.common.exception.NotFoundException;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
@@ -14,7 +15,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.sql.*;
 import java.util.List;
 import java.util.Objects;
@@ -38,8 +38,12 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getAll() {
+    public List<Horse> getAll(HorseSearchDto searchDto) {
         log.trace("calling getAll() ...");
+
+        if(searchDto != null && !searchDto.isEmpty()) {
+            return getAllBySearch(searchDto);
+        }
 
         try {
             return jdbcTemplate.query(SQL_SELECT_ALL, this::mapRow);
@@ -77,6 +81,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
+    @Transactional
     public Horse create(Horse horse) {
         log.trace("calling create() ...");
 
@@ -124,6 +129,7 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
+    @Transactional
     public Horse update(Horse horse) {
         log.trace("calling update() ...");
 
@@ -207,6 +213,84 @@ public class HorseJdbcDao implements HorseDao {
         log.trace("calling clearSireReference() ...");
         String sql = "UPDATE " + TABLE_NAME + " SET sireId = null WHERE sireId = " + id;
         jdbcTemplate.update(sql);
+    }
+
+    private List<Horse> getAllBySearch(HorseSearchDto searchDto) {
+        String sql = buildSearchSQLString(searchDto);
+
+        try {
+            return jdbcTemplate.query(sql, this::mapRow);
+        } catch (DataAccessException e) {
+            log.error(e.getMessage(), e);
+            throw new NotFoundException("Could not query all horses");
+        }
+    }
+
+    private String buildSearchSQLString(HorseSearchDto searchDto) {
+        log.trace("calling buildSearchSQLString() ...");
+
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+
+        sb.append("SELECT DISTINCT * FROM ");
+        sb.append(TABLE_NAME);
+
+        if(searchDto.getName() != null && !searchDto.getName().isEmpty()) {
+            sb.append(" WHERE ");
+            first = false;
+
+            sb.append(" LOWER(name) ILIKE LOWER('%")
+                    .append(searchDto.getName())
+                    .append("%') ");
+        }
+
+        if(searchDto.getDescription() != null && !searchDto.getDescription().isEmpty()) {
+            if(first) {
+                sb.append(" WHERE ");
+                first = false;
+            }
+            else {
+                sb.append(" AND ");
+            }
+
+            sb.append(" LOWER(description) ILIKE LOWER('%")
+                    .append(searchDto.getDescription())
+                    .append("%') ");
+        }
+
+        if(searchDto.getBornAfter() != null) {
+            if(first) {
+                sb.append(" WHERE ");
+                first = false;
+            }
+            else {
+                sb.append(" AND ");
+            }
+
+            sb.append(" birthdate > '")
+                    .append(searchDto.getBornAfter())
+                    .append("' ");
+        }
+
+        if(searchDto.getGender() != null) {
+            if(first) {
+                sb.append(" WHERE ");
+            }
+            else {
+                sb.append(" AND ");
+            }
+
+            sb.append(" LOWER(gender) = LOWER('")
+                    .append(searchDto.getGender())
+                    .append("')");
+        }
+
+        if(searchDto.getLimit() != null) {
+            sb.append(" LIMIT ")
+                    .append(searchDto.getLimit());
+        }
+
+        return sb.toString();
     }
 
     private Horse mapRow(ResultSet result, int rownum) throws SQLException {

@@ -20,4 +20,5 @@ public final class HorseValidationMessages {
     public static final String INVALID_SIRE_GENDER_MESSAGE = "The sire must be a male.";
     public static final String INVALID_DAM_BIRTHDATE_MESSAGE = "The dam must be older than the horse itself.";
     public static final String INVALID_SIRE_BIRTHDATE_MESSAGE = "The sire must be older than the horse itself.";
+    public static final String INVALID_LIMIT_MESSAGE = "The limit must be positive.";
 }

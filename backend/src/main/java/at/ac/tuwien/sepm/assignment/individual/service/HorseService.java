@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.assignment.individual.service;
 import at.ac.tuwien.sepm.assignment.individual.common.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface HorseService {
      *
      * @return A list of all {@link Horse horses}.
      */
-    List<HorseDto> getHorses();
+    List<HorseDto> getHorses(HorseSearchDto searchDto);
 
     /**
      * Retrieves an existing {@link Horse horse} with the given {@link Horse#getId() id}

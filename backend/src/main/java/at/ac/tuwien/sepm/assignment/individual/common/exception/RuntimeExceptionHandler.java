@@ -47,4 +47,9 @@ public class RuntimeExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHorseRelationshipException(HorseRelationshipException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getErrors());
     }
+
+    @ExceptionHandler(HorseSearchException.class)
+    protected ResponseEntity<Object> handleHorseSearchException(HorseSearchException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getErrors());
+    }
 }

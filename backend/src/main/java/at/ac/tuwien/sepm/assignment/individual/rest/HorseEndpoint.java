@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,9 @@ public class HorseEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<Stream<HorseDto>> getAllHorses() {
+    public ResponseEntity<Stream<HorseDto>> getAllHorses(@Valid HorseSearchDto searchDto) {
         log.info("A user requested all horses.");
-        var horseDtos = service.getHorses().stream();
+        var horseDtos = service.getHorses(searchDto).stream();
         return ResponseEntity.ok(horseDtos);
     }
 

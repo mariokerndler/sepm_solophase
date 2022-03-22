@@ -17,11 +17,4 @@ public class HorseServiceTest {
   @Autowired
   HorseService horseService;
 
-  @Test
-  public void getAllReturnsAllStoredHorses() {
-    List<HorseDto> horses = horseService.getHorses();
-    assertThat(horses.size()).isEqualTo(3);
-    assertThat(horses.get(0).id()).isEqualTo(-3);
-    assertThat(horses.get(0).name()).isEqualTo("Lilly");
-  }
 }
