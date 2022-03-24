@@ -6,7 +6,6 @@
 <div class="search-container">
   <div class="search-title-container">
     <h3>Search Horses</h3>
-
   </div>
 
   <div class="search-controls-container">
@@ -41,7 +40,6 @@
 
     <button id="search-reset-btn" class="btn btn-dark" (click)="resetSearchQuery()">Reset</button>
   </div>
-
 </div>
 
 <div class="mt-3">
@@ -51,11 +49,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let horse of horses">
-        <td class="col-md-8">{{horse.name}} (Born {{horse.birthdate}})</td>
-        <td class="col-md-2">
-          <button class="btn btn-primary btn-spacing" (click)="viewHorse(horse.id)">View</button>
-          <button class="btn btn-secondary btn-spacing" (click)="editHorse(horse.id)">Edit</button>
-          <button class="btn btn-danger btn-spacing" (click)="deleteHorse(horse.id)">Delete</button>
+        <td class="col-md-7">{{horse.name}} (Born {{horse.birthdate}})</td>
+        <td class="col-md-3">
+          <button class="btn btn-secondary ms-1" (click)="viewHorse(horse.id)">View</button>
+          <button class="btn btn-secondary ms-1" (click)="viewTree(horse.id)">View Tree</button>
+          <button class="btn btn-primary ms-1" (click)="editHorse(horse.id)">Edit</button>
+          <button class="btn btn-danger ms-1" (click)="deleteHorse(horse.id)">Delete</button>
         </td>
       </tr>
     </tbody>

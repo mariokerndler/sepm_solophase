@@ -1,0 +1,10 @@
+<h2>Horse Family-Tree</h2>
+
+<div id="generation-input" class="d-flex flex-row justify-content-start">
+  <div class="d-flex flex-row align-items-center">
+    <label for="generations">Generations:</label>
+    <input type="number" class="form-control" id="generations" name="generations" min="0" step="1" (change)="setQueryParameter()" [(ngModel)]="numberOfGenerations">
+  </div>
+</div>
+
+<app-horse-node id="horse-node" [horse]="horse"></app-horse-node>

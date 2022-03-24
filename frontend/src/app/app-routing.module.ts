@@ -6,6 +6,7 @@ import {HorseEditComponent} from './component/horse/horse-edit/horse-edit.compon
 import {HorseDetailComponent} from './component/horse/horse-detail/horse-detail.component';
 import {OwnerListComponent} from './component/owner/owner-list/owner-list.component';
 import {OwnerCreationComponent} from './component/owner/owner-creation/owner-creation.component';
+import {HorseTreeComponent} from './component/horse/horse-tree/horse-tree.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'horses', pathMatch: 'full'},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'horses/create', component: HorseCreationComponent},
   {path: 'horses/:id/edit', component: HorseEditComponent},
   {path: 'horses/:id/detail', component: HorseDetailComponent},
+  {path: 'horses/:id/familytree', component: HorseTreeComponent},
   {path: 'owners', component: OwnerListComponent},
   {path: 'owners/create', component: OwnerCreationComponent},
   {path: '**', redirectTo: 'horses'},

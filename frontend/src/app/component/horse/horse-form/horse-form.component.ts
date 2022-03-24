@@ -71,14 +71,14 @@ export class HorseFormComponent implements OnInit {
   ngOnInit(): void {
     this.formSubmitButtonText = this.isUpdateForm() ? 'Save' : 'Create';
 
-    if(this.isUpdateForm()) {
-      this.horseService
-        .getHorse(this.horseId, null, () => this.navigateToHorseList())
-        .subscribe(horse => this.onModelLoaded(HorseFormComponent.createModelFromHorseDto(horse)));
-    }
-    else {
+    if(!this.isUpdateForm()) {
       this.onModelLoaded(new AddUpdateHorseDto());
+      return;
     }
+
+    this.horseService
+      .getHorse(this.horseId, null, () => this.navigateToHorseList())
+      .subscribe(horse => this.onModelLoaded(HorseFormComponent.createModelFromHorseDto(horse)));
   }
 
   onSubmit(form: NgForm) {
@@ -112,13 +112,9 @@ export class HorseFormComponent implements OnInit {
 
   private onModelLoaded(model: AddUpdateHorseDto) {
     this.model = model;
-    this.loadDamAndSearch();
-    this.loadSiresAndSearch();
-    this.loadOwnersAndSearch();
-    this.formReady = true;
-  }
 
-  private loadDamAndSearch() {
+    this.owners$ = this.ownerService.getAll();
+
     this.dams$ = this.searchService
       .registeredSearch(
         this.damSearchTerms$,
@@ -127,9 +123,7 @@ export class HorseFormComponent implements OnInit {
           .search(HorseFormComponent.getFilter(Gender.female, searchTerm)),
         this.loadDefaultHorses(Gender.female)
       );
-  }
 
-  private loadSiresAndSearch() {
     this.sires$ = this.searchService
       .registeredSearch(
         this.sireSearchTerms$,
@@ -138,10 +132,8 @@ export class HorseFormComponent implements OnInit {
           .search(HorseFormComponent.getFilter(Gender.male, searchTerm)),
         this.loadDefaultHorses(Gender.male)
       );
-  }
 
-  private loadOwnersAndSearch() {
-    this.owners$ = this.ownerService.getAll();
+    this.formReady = true;
   }
 
   private loadDefaultHorses(gender: Gender): Observable<HorseDto[]> {

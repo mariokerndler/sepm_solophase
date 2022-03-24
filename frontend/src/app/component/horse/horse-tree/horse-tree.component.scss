@@ -1,0 +1,21 @@
+.ng-invalid  {
+  border-left: 5px solid #FC5C64;
+}
+
+#horse-node {
+  overflow: auto;
+  min-width: 500px;
+}
+
+#generation-input {
+  margin-bottom: 10px;
+}
+
+#generation-input label{
+  margin-right: 5px;
+}
+
+#generation-input  input{
+  max-width: 100px;
+}
+

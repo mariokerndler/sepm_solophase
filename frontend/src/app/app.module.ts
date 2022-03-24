@@ -15,6 +15,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import { HorseDetailComponent } from './component/horse/horse-detail/horse-detail.component';
 import { OwnerCreationComponent } from './component/owner/owner-creation/owner-creation.component';
 import { OwnerListComponent } from './component/owner/owner-list/owner-list.component';
+import { HorseTreeComponent } from './component/horse/horse-tree/horse-tree.component';
+import { HorseNodeComponent } from './component/horse/horse-node/horse-node.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { OwnerListComponent } from './component/owner/owner-list/owner-list.comp
     HorseDetailComponent,
     OwnerCreationComponent,
     OwnerListComponent,
+    HorseTreeComponent,
+    HorseNodeComponent,
   ],
     imports: [
         BrowserModule,

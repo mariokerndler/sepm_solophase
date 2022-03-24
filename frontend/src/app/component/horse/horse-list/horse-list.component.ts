@@ -114,6 +114,12 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
       .catch((err) =>  this.notificationService.notifyError(err.toString()));
   }
 
+  viewTree(id: number) {
+    this.router
+      .navigate(['/horses', id, 'familytree'])
+      .catch((err) =>  this.notificationService.notifyError(err.toString()));
+  }
+
   private searchWithCurrentFilter() {
     this.isLoading = true;
     this.horseService.search(this.searchParameter)
@@ -148,4 +154,5 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
       tap( _ => this.setSearchQueryParams())
     ).subscribe();
   }
+
 }

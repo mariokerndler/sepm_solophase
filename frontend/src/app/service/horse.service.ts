@@ -60,7 +60,7 @@ export class HorseService {
   /**
    * Create a new {@link HorseDto horse} and store it in the system
    *
-   * @param horse The newly created {@link HorseDto horse}.
+   * @param horse The {@link AddUpdateHorseDto} containing the information used to create a new {@link HorseDto}.
    *
    * @return observable containing the newly created {@link HorseDto horse}.
    */

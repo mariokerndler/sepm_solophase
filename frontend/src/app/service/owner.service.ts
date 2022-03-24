@@ -18,6 +18,11 @@ export class OwnerService {
     private notificationService: NotificationService
   ) { }
 
+  /**
+   * Fetches all {@link OwnerDto owners} stored in the system.
+   *
+   * @return observable list of found {@link OwnerDto owners}.
+   */
   getAll(): Observable<OwnerDto[]> {
     return this.http.get<OwnerDto[]>(baseUri)
       .pipe(
@@ -25,6 +30,13 @@ export class OwnerService {
       );
   }
 
+  /**
+   * Fetches the {@link OwnerDto owner} with the given {@link OwnerDto#id id} from the system.
+   *
+   * @param id The {@link OwnerDto#id id} of the {@link OwnerDto owner} that will be fetched.
+   *
+   * @return observable containing the fetched {@link OwnerDto owner}.
+   */
   getOwner(id: number): Observable<OwnerDto> {
     return this.http.get<OwnerDto>(baseUri + '/' + id)
       .pipe(
@@ -32,6 +44,13 @@ export class OwnerService {
       );
   }
 
+  /**
+   * Create a new {@link OwnerDto owner} and store it in the system.
+   *
+   * @param owner The {@link AddOwnerDto} containing the information used to create a new {@link OwnerDto}.
+   *
+   * @return observable containing the newly created {@link OwnerDto owner}.
+   */
   create(owner: AddOwnerDto): Observable<OwnerDto> {
     return this.http.post<OwnerDto>(baseUri, owner)
       .pipe(
