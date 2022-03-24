@@ -1,13 +1,18 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
 import at.ac.tuwien.sepm.assignment.individual.randomdata.RandomHorseGenerator;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Locale;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +22,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles({"test", "datagen"}) // enable "test" spring profile during test execution in order to pick up configuration from application-test.yml
@@ -33,12 +40,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class HorseEndpointTest {
 
+  private static final String baseUri = "/horses";
+
   @Autowired
   private WebApplicationContext webAppContext;
   private MockMvc mockMvc;
 
   @Autowired
-  ObjectMapper objectMapper;
+  private ObjectMapper objectMapper;
 
   @MockBean
   private HorseService horseService;
@@ -49,53 +58,63 @@ public class HorseEndpointTest {
   }
 
   @Test
-  public void gettingAllHorses() throws Exception {
-    //byte[] body = mockMvc
-    //    .perform(MockMvcRequestBuilders
-    //        .get("/horses")
-    //        .accept(MediaType.APPLICATION_JSON)
-    //    ).andExpect(status().isOk())
-    //    .andReturn().getResponse().getContentAsByteArray();
-//
-    //List<HorseDto> horseResult = objectMapper.readerFor(HorseDto.class).<HorseDto>readValues(body).readAll();
-//
-    //assertThat(horseResult).isNotNull();
-    //assertThat(horseResult.size()).isEqualTo(0);
+  public void getHorseShouldSucceed() throws Exception {
+    var horseDto = RandomHorseGenerator.createRandomHorseDto();
 
-    //assertThat(horseResult.get(0).id()).isEqualTo(-3);
-    //assertThat(horseResult.get(0).name()).isEqualTo("Lilly");
+    when(horseService.getHorseById(eq(horseDto.id()), any(Integer.class))).thenReturn(horseDto);
 
-    //assertThat(horseResult.get(1).id()).isEqualTo(-2);
-    //assertThat(horseResult.get(1).name()).isEqualTo("Alex");
+    var result = mockMvc.perform(get(baseUri + "/{id}", horseDto.id()).characterEncoding("UTF-8"))
+            .andExpect(status().isOk()).andReturn();
 
-    //assertThat(horseResult.get(2).id()).isEqualTo(-1);
-    //assertThat(horseResult.get(2).name()).isEqualTo("Bella");
-  }
-
-  //@Test
-  //public void getHorseShouldSucceed() throws Exception {
-  //  var horseDto = RandomHorseGenerator.createRandomHorseDto();
-//
-  //  when(horseService.getHorseById(eq(horseDto.id()))).thenReturn(horseDto);
-//
-  //  mockMvc.perform(MockMvcRequestBuilders.get("/horses/{id}", horseDto.id()).accept(MediaType.APPLICATION_JSON))
-  //          .andExpect(status().isOk());
-  //}
-
-  @Test
-  public void addHorseWithValidParametersShouldSucceed() throws Exception {
-    //var horseDto = RandomHorseGenerator.createRandomHorseDto();
-    //var horseDtoJSON = objectMapper.writeValueAsString(horseDto);
-//
-    //mockMvc.perform(MockMvcRequestBuilders.post("/horses").contentType(MediaType.APPLICATION_JSON).content(horseDtoJSON))
-    //        .andExpect(status().isCreated());
+    var response = result.getResponse().getContentAsString();
+    var serializedObject = objectMapper.readValue(response, HorseDto.class);
+    assertThat(serializedObject).isEqualTo(horseDto);
   }
 
   @Test
-  public void gettingNonexistentUrlReturns404() throws Exception {
-    //mockMvc
-    //    .perform(MockMvcRequestBuilders
-    //        .get("/asdf123")
-    //    ).andExpect(status().isNotFound());
+  public void createNewHorseWithValidPropertiesShouldSucceed() throws Exception {
+    var horseDto = RandomHorseGenerator.createRandomAddUpdateHorseDto();
+    var horseDtoJSON = objectMapper.writeValueAsString(horseDto);
+
+    mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(horseDtoJSON)).andExpect(status().isCreated());
+  }
+
+  @Test
+  public void createNewHorseWithInvalidPropertiesShouldFail() throws Exception {
+    var horseDto = RandomHorseGenerator.createRandomAddUpdateHorseDto();
+    horseDto.setGender(null);
+    var horseDtoJSON = objectMapper.writeValueAsString(horseDto);
+
+    mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(horseDtoJSON))
+            .andExpect(status().isUnprocessableEntity());
+  }
+
+  @Test
+  public void getHorsesShouldBundleSearchQueries() throws Exception {
+    var name = "Test";
+    var description = "Test";
+    var date = LocalDate.now();
+    var gender = Gender.FEMALE;
+    var limit = 1;
+    var ownerId = 0L;
+
+    mockMvc.perform(get(baseUri)
+            .queryParam("name", name)
+            .queryParam("description", description)
+            .queryParam("bornAfter", date.toString())
+            .queryParam("gender", gender.toString())
+            .queryParam("limit", Integer.toString(limit))
+            .queryParam("ownerId", Long.toString(ownerId)));
+
+    verify(horseService).getHorses(argThat(searchDto -> {
+      assertThat(searchDto).isNotNull();
+      assertThat(searchDto.getName()).isEqualTo(name);
+      assertThat(searchDto.getDescription()).isEqualTo(description);
+      assertThat(searchDto.getBornAfter()).isEqualTo(date);
+      assertThat(searchDto.getGender()).isEqualTo(gender);
+      assertThat(searchDto.getLimit()).isEqualTo(limit);
+      assertThat(searchDto.getOwnerId()).isEqualTo(ownerId);
+      return true;
+    }));
   }
 }

@@ -8,6 +8,7 @@ export class SearchService {
 
   constructor() { }
 
+  // Based on this article: https://weblog.west-wind.com/posts/2019/Apr/08/Using-the-ngBootStrap-TypeAhead-Control-with-Dynamic-Data#sync
   public registeredSearch<T>(searchTerms: Subject<string>,
                              loadingStateSetter: (loading: boolean) => void,
                              searchMethod: (term: string) => Observable<T[]>,

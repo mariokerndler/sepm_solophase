@@ -17,6 +17,9 @@ spring:
   h2:
     console:
       enabled: true
+  mvc:
+    format:
+      date: iso
 server:
   port: 8080
   error:
