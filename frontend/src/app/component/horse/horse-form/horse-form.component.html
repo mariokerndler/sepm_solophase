@@ -76,6 +76,11 @@
     </ng-select>
   </div>
 
+  <div class="form-check" *ngIf="!horseId">
+    <label class="form-check-label" for="create-another">Create another one</label>
+    <input type="checkbox" id="create-another" name="create-another" class="form-check-input me-2" [(ngModel)]="createAnother">
+  </div>
+
   <div id="button-container" class="ml-auto">
     <button type="submit" class="btn btn-success" [disabled]="!(horseForm.form.valid && horseForm.form.dirty)">
       {{formSubmitButtonText}}
@@ -84,11 +89,6 @@
     <button type="button" class="btn btn-danger ms-1" (click)="goBack()">
       Cancel
     </button>
-
-    <div *ngIf="!horseId">
-      <label class="form-check-label" for="create-another">Create another one</label>
-      <input type="checkbox" id="create-another" name="create-another" class="form-check-input me-2" [(ngModel)]="createAnother">
-    </div>
   </div>
 </form>
 

@@ -1,1 +1,37 @@
-<p>owner-creation works!</p>
+<h2>Create a owner</h2>
+<form (ngSubmit)="onSubmit(ownerForm)" #ownerForm="ngForm">
+  <div class="form-group">
+    <label for="firstname">Firstname*</label>
+    <input type="text" class="form-control" id="firstname" name="firstname" required pattern="[ÄÖÜA-Z][äöüa-zA-Z]*" placeholder="Enter a firstname" #firstname="ngModel" [(ngModel)]="model.firstname">
+    <div class="alert alert-danger" [hidden]="firstname.valid || firstname.untouched">
+      Firstname can't be empty and has to consist of the following characters: Ä, Ö, Ü, A-Z, ä, ö, ü, a-z.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="surname">Surname*</label>
+    <input type="text" class="form-control" id="surname" name="surname" required pattern="[ÄÖÜa-zA-z]+([ '-][äöüa-zA-Z]+)*" placeholder="Enter a surname" #surname="ngModel" [(ngModel)]="model.surname">
+    <div class="alert alert-danger" [hidden]="surname.valid || surname.untouched">
+      Surname can't be empty and has to consist of the following characters: Ä, Ö, Ü, A-Z, ä, ö, ü, a-z, ' ', -.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-Mail</label>
+    <input type="email" class="form-control" id="email" name="email"  placeholder="Enter an E-Mail" [(ngModel)]="model.email">
+  </div>
+
+  <div class="form-check">
+    <label class="form-check-label" for="create-another">Create another one</label>
+    <input type="checkbox" id="create-another" name="create-another" class="form-check-input me-2" [(ngModel)]="createAnother">
+  </div>
+
+  <div id="button-container" class="ml-auto">
+    <button type="submit" class="btn btn-success" [disabled]="!(ownerForm.form.valid && ownerForm.form.dirty)">
+      Create
+    </button>
+    <button type="button" class="btn btn-danger ms-1" (click)="goBack()">
+      Cancel
+    </button>
+  </div>
+</form>

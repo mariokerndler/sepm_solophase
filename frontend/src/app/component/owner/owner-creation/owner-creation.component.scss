@@ -1,0 +1,25 @@
+$error-color: #FC5C64;
+$error-color-light: #FFAAA6;
+$valid-color: darkseagreen;
+
+form {
+  flex: 1 1 auto;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid $valid-color;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid $error-color;
+}
+
+label, legend {
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+form > *:not(:first-child) {
+  margin-top: 10px;
+}

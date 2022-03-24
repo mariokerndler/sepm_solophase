@@ -8,8 +8,8 @@ import {debounceTime, distinctUntilChanged, fromEvent, merge, Observable, Subscr
 import {SearchService} from '../../../service/search.service';
 import {NgSelectComponent} from '@ng-select/ng-select';
 import {Gender} from '../../../dto/horse/gender';
-import {OwnerDto} from "../../../dto/owner/ownerDto";
-import {OwnerService} from "../../../service/owner.service";
+import {OwnerDto} from '../../../dto/owner/ownerDto';
+import {OwnerService} from '../../../service/owner.service';
 
 @Component({
   selector: 'app-horse',

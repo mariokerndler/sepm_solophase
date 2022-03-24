@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../environments/environment";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {NotificationService} from "./notification.service";
-import {catchError, Observable, tap} from "rxjs";
-import {OwnerDto} from "../dto/owner/ownerDto";
-import {AddOwnerDto} from "../dto/owner/addOwnerDto";
+import {environment} from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {NotificationService} from './notification.service';
+import {catchError, Observable, tap} from 'rxjs';
+import {OwnerDto} from '../dto/owner/ownerDto';
+import {AddOwnerDto} from '../dto/owner/addOwnerDto';
 
 const baseUri = environment.backendUrl + '/owners';
 
