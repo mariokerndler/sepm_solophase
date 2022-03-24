@@ -1,5 +1,5 @@
 51822845 - Mario Kerndler
-Gesamtsumme der Arbeitszeit: 39h
+Gesamtsumme der Arbeitszeit: 44h
 h
 Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 11.03.2022 - 3h    - [Preperations]    	- Getting comfortable with the template and get informations about spring boot/angular.
@@ -14,3 +14,4 @@ Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 22.03.2022 - 4h	   - [Research, US7]    - Added search bar to the horse list view. Research on how to do registered search in angular.
 23.03.2022 - 3h	   - [US8]		- Added backend REST endpoints for creating owners. 
 23.03.2022 - 2h	   - [US7, US8]		- REST endpoint now properly displays the owner and added search functionality for owners in the backend.
+24.03.2022 - 3h	   - [US7, US9]		- Implemented search for owner and updated horse creation form to support owners.

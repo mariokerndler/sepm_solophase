@@ -1,14 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, NgForm} from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {HorseService} from 'src/app/service/horse.service';
-import {HorseDto} from '../../../dto/horseDto';
-import {Gender} from '../../../dto/gender';
-import {Observable, Subject} from 'rxjs';
-import {AddUpdateHorseDto} from '../../../dto/addUpdateHorseDto';
+import {HorseDto} from '../../../dto/horse/horseDto';
+import {Gender} from '../../../dto/horse/gender';
+import {map, Observable, of, Subject} from 'rxjs';
+import {AddUpdateHorseDto} from '../../../dto/horse/addUpdateHorseDto';
 import {NotificationService} from '../../../service/notification.service';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
-import {HorseSearchDto} from '../../../dto/horseSearchDto';
+import {HorseSearchDto} from '../../../dto/horse/horseSearchDto';
+import {OwnerDto} from '../../../dto/owner/ownerDto';
+import {OwnerService} from '../../../service/owner.service';
+import {SearchService} from '../../../service/search.service';
 
 @Component({
   selector: 'app-horse-form',
@@ -24,6 +27,8 @@ export class HorseFormComponent implements OnInit {
 
   formSubmitButtonText: string;
 
+  owners$: Observable<OwnerDto[]>;
+
   dams$: Observable<HorseDto[]>;
   isLoadingDam = false;
   damSearchTerms$ = new Subject<string>();
@@ -35,8 +40,9 @@ export class HorseFormComponent implements OnInit {
   createAnother = false;
 
   constructor(
-    private fb: FormBuilder,
     private horseService: HorseService,
+    private ownerService: OwnerService,
+    private searchService: SearchService,
     private notificationService: NotificationService,
     private router: Router,
     private location: Location
@@ -48,9 +54,18 @@ export class HorseFormComponent implements OnInit {
       description: horse?.description,
       birthdate: horse.birthdate,
       gender: horse.gender,
+      ownerId: horse.owner?.id,
       damId: horse.dam?.id,
       sireId: horse.sire?.id
     };
+  }
+
+  private static getFilter(gender: Gender, searchTerm?: string): HorseSearchDto {
+    const filter = new HorseSearchDto();
+    filter.limit = 5;
+    filter.gender = gender;
+    filter.name = searchTerm;
+    return filter;
   }
 
   ngOnInit(): void {
@@ -99,20 +114,45 @@ export class HorseFormComponent implements OnInit {
     this.model = model;
     this.loadDamAndSearch();
     this.loadSiresAndSearch();
+    this.loadOwnersAndSearch();
     this.formReady = true;
   }
 
   private loadDamAndSearch() {
-    const filter = new HorseSearchDto();
-    filter.limit = 5;
-    filter.gender = Gender.female;
-    this.dams$ = this.horseService.search(filter);
+    this.dams$ = this.searchService
+      .registeredSearch(
+        this.damSearchTerms$,
+        loading => this.isLoadingDam = loading,
+        searchTerm => this.horseService
+          .search(HorseFormComponent.getFilter(Gender.female, searchTerm)),
+        this.loadDefaultHorses(Gender.female)
+      );
   }
 
   private loadSiresAndSearch() {
-    const filter = new HorseSearchDto();
-    filter.limit = 5;
-    filter.gender = Gender.male;
-    this.sires$ = this.horseService.search(filter);
+    this.sires$ = this.searchService
+      .registeredSearch(
+        this.sireSearchTerms$,
+        loading => this.isLoadingSire = loading,
+        searchTerm => this.horseService
+          .search(HorseFormComponent.getFilter(Gender.male, searchTerm)),
+        this.loadDefaultHorses(Gender.male)
+      );
+  }
+
+  private loadOwnersAndSearch() {
+    this.owners$ = this.ownerService.getAll();
+  }
+
+  private loadDefaultHorses(gender: Gender): Observable<HorseDto[]> {
+    const id = gender === Gender.female ? this.model.damId : this.model.sireId;
+
+    if(id) {
+      return this.horseService.getHorse(id)
+        .pipe(map((horse: HorseDto) => Array.of(horse)));
+    }
+    else {
+      return this.horseService.search(HorseFormComponent.getFilter(gender));
+    }
   }
 }

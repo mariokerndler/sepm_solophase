@@ -6,8 +6,9 @@ export class HorseSearchDto {
   description?: string;
   bornAfter?: string;
   gender?: Gender;
+  ownerId?: number;
 
   isEmpty(): boolean {
-    return !this.limit && !this.name && !this.description && !this.bornAfter && !this.gender;
+    return !this.limit && !this.name && !this.description && !this.bornAfter && !this.gender && !this.ownerId;
   }
 }

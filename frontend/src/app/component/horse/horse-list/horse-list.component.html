@@ -4,7 +4,11 @@
 </div>
 
 <div class="search-container">
-  <div class="search-title-container"><h3>Search Horses</h3></div>
+  <div class="search-title-container">
+    <h3>Search Horses</h3>
+
+  </div>
+
   <div class="search-controls-container">
     <div class="search-row">
       <label for="name-search">Name:</label>
@@ -26,8 +30,18 @@
       <ng-select id="gender-search" name="gender-filter" #genderSearch [items]="genders" [(ngModel)]="searchParameter.gender"></ng-select>
     </div>
 
+    <div class="search-row">
+      <label for="owner-search">Owner</label>
+      <ng-select id="owner-search" name="owner-search" #ownerSearch [(ngModel)]="searchParameter.ownerId">
+        <ng-option *ngFor="let owner of owners$ | async" [value]="owner.id">
+          {{owner.firstname}} {{owner.surname}}
+        </ng-option>
+      </ng-select>
+    </div>
+
     <button id="search-reset-btn" class="btn btn-dark" (click)="resetSearchQuery()">Reset</button>
   </div>
+
 </div>
 
 <div class="mt-3">

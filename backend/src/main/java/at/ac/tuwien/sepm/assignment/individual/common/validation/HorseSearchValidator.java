@@ -38,7 +38,7 @@ public class HorseSearchValidator implements ConstraintValidator<HorseSearch, Ho
             validLimit = searchDto.getLimit() >= 0;
         }
 
-        if(searchDto.getLimit() != null && searchDto.getOwnerId() < 0) {
+        if(searchDto.getOwnerId() != null && searchDto.getOwnerId() < 0) {
             validOwnerId = false;
         }
 

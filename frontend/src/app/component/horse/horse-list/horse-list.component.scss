@@ -21,8 +21,12 @@
   margin-right: 10px;
 }
 
+#search-reset-btn {
+  margin-left: 5px;
+}
+
+
 .search-container {
-  display: flex;
   padding: 10px;
   background: lightgrey;
   border-radius: 5px;
@@ -56,4 +60,9 @@
 
 #gender-search {
   width: 120px;
+}
+
+#owner-search {
+  flex: 1 1 auto;
+  min-width: 200px;
 }

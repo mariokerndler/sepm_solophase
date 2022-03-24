@@ -50,6 +50,15 @@
   </fieldset>
 
   <div class="form-group">
+    <label for="owner">Owner</label>
+    <ng-select id="owner" name="owner" placeholder="Choose owner (optional)" [(ngModel)]="model.ownerId">
+      <ng-option *ngFor="let owner of owners$ | async" [value]="owner.id">
+        {{owner.firstname}} {{owner.surname}}
+      </ng-option>
+    </ng-select>
+  </div>
+
+  <div class="form-group">
     <label for="dam">Dam</label>
     <ng-select id="dam" name="dam" [loading]="isLoadingDam" [typeahead]="damSearchTerms$" placeholder="Choose a dam (Optional)" [(ngModel)]="model.damId">
       <ng-option *ngFor="let dam of dams$ | async" [value]="dam.id">

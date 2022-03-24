@@ -13,6 +13,8 @@ import { HorseCreationComponent } from './component/horse/horse-creation/horse-c
 import { HorseEditComponent } from './component/horse/horse-edit/horse-edit.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import { HorseDetailComponent } from './component/horse/horse-detail/horse-detail.component';
+import { OwnerCreationComponent } from './component/owner/owner-creation/owner-creation.component';
+import { OwnerListComponent } from './component/owner/owner-list/owner-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { HorseDetailComponent } from './component/horse/horse-detail/horse-detai
     HorseCreationComponent,
     HorseEditComponent,
     HorseDetailComponent,
+    OwnerCreationComponent,
+    OwnerListComponent,
   ],
     imports: [
         BrowserModule,

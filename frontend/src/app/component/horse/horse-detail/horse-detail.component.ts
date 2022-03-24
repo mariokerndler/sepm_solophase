@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HorseDto} from '../../../dto/horseDto';
+import {HorseDto} from '../../../dto/horse/horseDto';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HorseService} from '../../../service/horse.service';

@@ -1,11 +1,12 @@
 <h2>Horse Details</h2>
 
 <div id="detail-container" *ngIf="horse">
-  <ng-template #none><i>None</i></ng-template>
-  <ng-template #notSet><i>Not set</i></ng-template>
+  <ng-template #none>None</ng-template>
+  <ng-template #notSet>Not set</ng-template>
   <ng-template #description>
     <textarea [value]="horse.description" disabled></textarea>
   </ng-template>
+  <ng-template #owner>{{horse.owner?.firstname}} {{horse.owner?.surname}}</ng-template>
   <ng-template #dam>
     {{horse.dam?.name}}
     <button class="btn btn-secondary btn-sm" routerLink="/horses/{{horse.dam?.id}}/detail" style="cursor: pointer">View</button>
@@ -33,6 +34,11 @@
   <div class="detail-row">
     <label for="gender">Gender:</label>
     <span id="gender">{{horse.gender}}</span>
+  </div>
+
+  <div class="detail-row">
+    <label for="owner">Owner:</label>
+    <span id="owner" *ngIf="horse.owner?.surname;then owner else notSet"></span>
   </div>
 
   <div class="detail-row">

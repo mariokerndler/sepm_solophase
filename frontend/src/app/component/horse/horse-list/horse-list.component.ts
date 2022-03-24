@@ -1,13 +1,15 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { HorseDto } from '../../../dto/horseDto';
+import { HorseDto } from '../../../dto/horse/horseDto';
 import { HorseService } from 'src/app/service/horse.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../../service/notification.service';
-import {HorseSearchDto} from '../../../dto/horseSearchDto';
-import {debounceTime, distinctUntilChanged, fromEvent, merge, Subscription, tap} from 'rxjs';
+import {HorseSearchDto} from '../../../dto/horse/horseSearchDto';
+import {debounceTime, distinctUntilChanged, fromEvent, merge, Observable, Subscription, tap} from 'rxjs';
 import {SearchService} from '../../../service/search.service';
 import {NgSelectComponent} from '@ng-select/ng-select';
-import {Gender} from '../../../dto/gender';
+import {Gender} from '../../../dto/horse/gender';
+import {OwnerDto} from "../../../dto/owner/ownerDto";
+import {OwnerService} from "../../../service/owner.service";
 
 @Component({
   selector: 'app-horse',
@@ -20,12 +22,15 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('descriptionSearch') descriptionSearch: ElementRef;
   @ViewChild('bornAfterSearch') bornAfterSearch: ElementRef;
   @ViewChild('genderSearch') genderSearch: NgSelectComponent;
+  @ViewChild('ownerSearch') ownerSearch: NgSelectComponent;
 
   horses: HorseDto[];
   genders = Object.values(Gender);
   isLoading: boolean;
 
   searchParameter: HorseSearchDto = new HorseSearchDto();
+
+  owners$: Observable<OwnerDto[]>;
 
   private routeSearchQuerySubscription: Subscription;
   private searchSubscription: Subscription;
@@ -36,18 +41,21 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private horseService: HorseService,
     private searchService: SearchService,
+    private ownerService: OwnerService,
     private notificationService: NotificationService
   ) {
   }
 
   ngOnInit(): void {
     this.reloadHorses();
+    this.owners$ = this.ownerService.getAll();
 
     this.routeSearchQuerySubscription = this.route.queryParams
       .subscribe( (params) => {
         this.searchParameter.name = params.name;
         this.searchParameter.description = params.description;
         this.searchParameter.gender = params.gender;
+        this.searchParameter.ownerId = params.ownerId;
         this.searchWithCurrentFilter();
       });
   }
@@ -119,7 +127,8 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
         name: this.searchParameter.name?.length ? this.searchParameter.name : null,
         description:  this.searchParameter.description?.length ? this.searchParameter.description : null,
         bornAfter: this.searchParameter.bornAfter?.length ? this.searchParameter.bornAfter : null,
-        gender: this.searchParameter.gender
+        gender: this.searchParameter.gender,
+        ownerId: this.searchParameter.ownerId
       }
     }).catch( (reason) => this.notificationService.notifyError(reason.toString()));
   }
@@ -132,7 +141,8 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(debounceTime(500)),
       fromEvent(this.bornAfterSearch.nativeElement, 'input')
         .pipe(debounceTime(500)),
-      this.genderSearch.changeEvent.asObservable()
+      this.genderSearch.changeEvent.asObservable(),
+      this.ownerSearch.changeEvent.asObservable()
     ).pipe(
       distinctUntilChanged(),
       tap( _ => this.setSearchQueryParams())

@@ -2,10 +2,10 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {catchError, Observable, tap} from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HorseDto } from '../dto/horseDto';
-import {AddUpdateHorseDto} from '../dto/addUpdateHorseDto';
+import { HorseDto } from '../dto/horse/horseDto';
+import {AddUpdateHorseDto} from '../dto/horse/addUpdateHorseDto';
 import {NotificationService} from './notification.service';
-import {HorseSearchDto} from '../dto/horseSearchDto';
+import {HorseSearchDto} from '../dto/horse/horseSearchDto';
 
 const baseUri = environment.backendUrl + '/horses';
 

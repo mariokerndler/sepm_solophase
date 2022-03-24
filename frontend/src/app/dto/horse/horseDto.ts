@@ -1,5 +1,5 @@
 import { Gender } from './gender';
-import {OwnerDto} from './owner';
+import { OwnerDto} from '../owner/ownerDto';
 
 export interface HorseDto {
   id?: number;
