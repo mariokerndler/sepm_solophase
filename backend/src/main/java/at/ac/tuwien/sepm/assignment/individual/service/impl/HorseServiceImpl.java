@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
+import at.ac.tuwien.sepm.assignment.individual.persistence.OwnerDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +18,15 @@ import java.util.function.Function;
 
 @Service
 public class HorseServiceImpl implements HorseService {
+
     private static final Logger log = LoggerFactory.getLogger(HorseServiceImpl.class);
     private final HorseDao dao;
+    private final OwnerDao ownerDao;
     private final HorseMapper mapper;
 
-    public HorseServiceImpl(HorseDao dao, HorseMapper mapper) {
+    public HorseServiceImpl(HorseDao dao, OwnerDao ownerDao, HorseMapper mapper) {
         this.dao = dao;
+        this.ownerDao = ownerDao;
         this.mapper = mapper;
     }
 
@@ -30,8 +34,8 @@ public class HorseServiceImpl implements HorseService {
     public List<HorseDto> getHorses(HorseSearchDto searchDto) {
         log.trace("calling getHorses() ...");
         var horses = dao.getAll(searchDto).stream().map(horse -> mapper.entityToDto(horse, 0)).toList();
-        log.info("Retrieved all horses{} ({})",
-                !searchDto.isEmpty() ? (" matching the search request: " + searchDto) : "",
+        log.info("Retrieved all horses {} ({})",
+                !searchDto.isEmpty() ? ("matching the search request: " + searchDto) : "",
                 horses.size());
         return horses;
     }
@@ -50,6 +54,7 @@ public class HorseServiceImpl implements HorseService {
         var horse = mapper.dtoToEntity(dto);
         setDam(horse, dto.getDamId());
         setSire(horse, dto.getSireId());
+        setOwner(horse, dto.getOwnerId());
 
         horse = dao.create(horse);
         log.info("Created new horse with id='{}'", horse.getId());
@@ -64,6 +69,7 @@ public class HorseServiceImpl implements HorseService {
         mapper.updateFromDto(horse, dto);
         setDam(horse, dto.getDamId());
         setSire(horse, dto.getSireId());
+        setOwner(horse, dto.getOwnerId());
 
         horse = dao.update(horse);
         log.info("Updated horse with id '{}'", horse.getId());
@@ -84,6 +90,8 @@ public class HorseServiceImpl implements HorseService {
     private void setSire(Horse horse, Long id) {
         setEntityById(id, dao::getById, horse::setSire);
     }
+
+    private void setOwner(Horse horse, Long ownerId) { setEntityById(ownerId, ownerDao::getById, horse::setOwner);}
 
     private <T> void setEntityById(Long id, Function<Long, T> getter, Consumer<T> setter) {
         var entity = (id != null && id != 0) ? getter.apply(id) : null;

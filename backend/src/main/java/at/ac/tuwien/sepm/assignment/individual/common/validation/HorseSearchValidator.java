@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.common.validation;
 
 import at.ac.tuwien.sepm.assignment.individual.common.exception.HorseSearchException;
+import at.ac.tuwien.sepm.assignment.individual.common.validation.messages.HorseValidationMessages;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ public class HorseSearchValidator implements ConstraintValidator<HorseSearch, Ho
         boolean validDescription = true;
         boolean validBornAfter = true;
         boolean validLimit = true;
+        boolean validOwnerId = true;
 
         if(searchDto.getName() != null && !searchDto.getName().isEmpty()) {
             validName = (!searchDto.getName().isBlank() || searchDto.getName().length() <= HorseValidationMessages.MAX_NAME_LENGTH);
@@ -36,7 +38,11 @@ public class HorseSearchValidator implements ConstraintValidator<HorseSearch, Ho
             validLimit = searchDto.getLimit() >= 0;
         }
 
-        if(validBornAfter && validName && validDescription && validLimit) {
+        if(searchDto.getLimit() != null && searchDto.getOwnerId() < 0) {
+            validOwnerId = false;
+        }
+
+        if(validBornAfter && validName && validDescription && validLimit && validOwnerId) {
             return true;
         }
 
@@ -46,6 +52,7 @@ public class HorseSearchValidator implements ConstraintValidator<HorseSearch, Ho
         addSearchValidationError(validDescription, HorseValidationMessages.DESCRIPTION_TOO_LONG_MESSAGE, exception);
         addSearchValidationError(validBornAfter, HorseValidationMessages.INVALID_BIRTHDAY_MESSAGE, exception);
         addSearchValidationError(validLimit, HorseValidationMessages.INVALID_LIMIT_MESSAGE, exception);
+        addSearchValidationError(validOwnerId, HorseValidationMessages.INVALID_OWNERID_MESSAGE, exception);
 
         throw exception;
     }

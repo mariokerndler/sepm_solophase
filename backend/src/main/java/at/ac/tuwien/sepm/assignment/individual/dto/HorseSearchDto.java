@@ -1,10 +1,14 @@
 package at.ac.tuwien.sepm.assignment.individual.dto;
 
 import at.ac.tuwien.sepm.assignment.individual.common.validation.HorseSearch;
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
+/**
+ * Defines the filter to search for {@link Horse horses}.
+ */
 @HorseSearch
 public class HorseSearchDto {
     private Integer limit;
@@ -18,8 +22,10 @@ public class HorseSearchDto {
 
     private Gender gender;
 
+    private Long ownerId;
+
     public boolean isEmpty() {
-        return limit == null && name == null && description == null && bornAfter == null && gender == null;
+        return limit == null && name == null && description == null && bornAfter == null && gender == null && ownerId == null;
     }
 
     public Integer getLimit() {
@@ -62,6 +68,14 @@ public class HorseSearchDto {
         this.gender = gender;
     }
 
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
     @Override
     public String toString() {
         return "HorseSearchDto{" +
@@ -70,6 +84,7 @@ public class HorseSearchDto {
                 ", description='" + description + '\'' +
                 ", bornAfter=" + bornAfter +
                 ", gender=" + gender +
+                ", ownerId=" + ownerId +
                 '}';
     }
 }

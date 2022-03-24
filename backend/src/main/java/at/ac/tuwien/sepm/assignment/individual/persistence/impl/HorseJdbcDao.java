@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.dto.HorseSearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
+import at.ac.tuwien.sepm.assignment.individual.persistence.OwnerDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -32,9 +33,11 @@ public class HorseJdbcDao implements HorseDao {
     private static final String SQL_DELETE_BY_ID = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
 
     private final JdbcTemplate jdbcTemplate;
+    private final OwnerDao ownerDao;
 
-    public HorseJdbcDao(JdbcTemplate jdbcTemplate) {
+    public HorseJdbcDao(JdbcTemplate jdbcTemplate, OwnerDao ownerDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.ownerDao = ownerDao;
     }
 
     @Override
@@ -63,6 +66,10 @@ public class HorseJdbcDao implements HorseDao {
             if(horse == null) {
                 log.error("Horse with id '" + id + "' not found");
                 throw new NotFoundException("Horse with id '" + id + "' not found");
+            }
+
+            if(horse.getOwnerId() != null) {
+                horse.setOwner(ownerDao.getById(horse.getOwnerId()));
             }
 
             if(horse.getDamId() != null) {
@@ -272,6 +279,20 @@ public class HorseJdbcDao implements HorseDao {
                     .append("' ");
         }
 
+        if(searchDto.getOwnerId() != null) {
+            if(first) {
+                sb.append(" WHERE ");
+                first = false;
+            }
+            else {
+                sb.append(" AND ");
+            }
+
+            sb.append(" ownerId = '")
+                    .append(searchDto.getOwnerId())
+                    .append("' ");
+        }
+
         if(searchDto.getGender() != null) {
             if(first) {
                 sb.append(" WHERE ");
@@ -304,6 +325,10 @@ public class HorseJdbcDao implements HorseDao {
         Long ownerId = result.getLong("ownerId");
         if(result.wasNull()) {
             ownerId = null;
+        }
+
+        if(ownerId != null) {
+            horse.setOwner(ownerDao.getById(ownerId));
         }
         horse.setOwnerId(ownerId);
 

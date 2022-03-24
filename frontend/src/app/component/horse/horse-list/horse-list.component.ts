@@ -7,7 +7,7 @@ import {HorseSearchDto} from '../../../dto/horseSearchDto';
 import {debounceTime, distinctUntilChanged, fromEvent, merge, Subscription, tap} from 'rxjs';
 import {SearchService} from '../../../service/search.service';
 import {NgSelectComponent} from '@ng-select/ng-select';
-import {Gender} from "../../../dto/gender";
+import {Gender} from '../../../dto/gender';
 
 @Component({
   selector: 'app-horse',

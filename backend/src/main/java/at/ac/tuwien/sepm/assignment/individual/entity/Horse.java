@@ -10,6 +10,8 @@ public class Horse {
     private String description;
     private LocalDate birthdate;
     private Gender gender;
+
+    private Owner owner;
     private Long ownerId;
 
     private Horse dam;
@@ -56,6 +58,14 @@ public class Horse {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     public Long getOwnerId() {

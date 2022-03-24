@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.common.validation;
 
 import at.ac.tuwien.sepm.assignment.individual.common.exception.HorseRelationshipException;
+import at.ac.tuwien.sepm.assignment.individual.common.validation.messages.HorseValidationMessages;
 import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.enums.Gender;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;

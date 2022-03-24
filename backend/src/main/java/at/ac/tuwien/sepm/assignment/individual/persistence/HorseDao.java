@@ -20,9 +20,9 @@ public interface HorseDao {
     List<Horse> getAll(HorseSearchDto searchDto);
 
     /**
-     * Retrieves the {@link Horse horse} with the given {@link Horse#getId()} id} from the persistent data store.
+     * Retrieves the {@link Horse horse} with the given {@link Horse#getId() id} from the persistent data store.
      *
-     * @param id The {@link Horse#getId()} id} of the {@link Horse horse} to return.
+     * @param id The {@link Horse#getId() id} of the {@link Horse horse} to return.
      *
      * @return The specified {@link Horse}.
      */

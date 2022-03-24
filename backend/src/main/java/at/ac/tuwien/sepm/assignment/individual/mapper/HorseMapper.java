@@ -2,9 +2,11 @@ package at.ac.tuwien.sepm.assignment.individual.mapper;
 
 import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.dto.OwnerDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Component;
 public class HorseMapper {
 
     private static final Logger log = LoggerFactory.getLogger(HorseMapper.class);
+
+    @Autowired
+    private OwnerMapper ownerMapper;
 
     public HorseDto entityToDto(Horse horse, int numOfGenerations) {
         log.trace("calling entityToDto() ...");
@@ -29,7 +34,12 @@ public class HorseMapper {
             sire = entityToDto(horse.getSire(), numOfGenerations);
         }
 
-        return new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthdate(), horse.getGender(), horse.getOwnerId(), dam, sire);
+        OwnerDto owner = null;
+        if(horse.getOwner() != null) {
+            owner = ownerMapper.entityToDto(horse.getOwner());
+        }
+
+        return new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthdate(), horse.getGender(), owner, dam, sire);
     }
 
     public Horse dtoToEntity(AddUpdateHorseDto dto) {

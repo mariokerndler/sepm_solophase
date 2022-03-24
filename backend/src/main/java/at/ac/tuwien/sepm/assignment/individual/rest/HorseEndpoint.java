@@ -12,7 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.stream.Stream;
+import java.util.List;
 
 @Validated
 @RestController
@@ -29,9 +29,9 @@ public class HorseEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<Stream<HorseDto>> getAllHorses(@Valid HorseSearchDto searchDto) {
+    public ResponseEntity<List<HorseDto>> getAllHorses(@Valid HorseSearchDto searchDto) {
         log.info("A user requested all horses.");
-        var horseDtos = service.getHorses(searchDto).stream();
+        var horseDtos = service.getHorses(searchDto);
         return ResponseEntity.ok(horseDtos);
     }
 

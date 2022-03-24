@@ -12,6 +12,7 @@ import java.util.List;
  * Service for working with horses.
  */
 public interface HorseService {
+
     /**
      * Returns all {@link Horse horses} stored in the system.
      *
