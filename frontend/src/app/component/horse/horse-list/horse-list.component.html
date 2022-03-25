@@ -1,6 +1,6 @@
-<div class="flex-horizontal full-width mt-3">
-  <button class="btn btn-primary btn-spacing" (click)="createHorse()">New Horse</button>
-  <button class="btn btn-light mr-1" (click)="reloadHorses()">&#x21bb;</button>
+<div class="flex-horizontal full-width">
+  <button class="btn btn-primary btn-spacing ms-1" (click)="createHorse()">New Horse</button>
+  <button class="btn btn-light ms-1" (click)="reloadHorses()">&#x21bb;</button>
 </div>
 
 <div class="search-container">
@@ -30,7 +30,7 @@
     </div>
 
     <div class="search-row">
-      <label for="owner-search">Owner</label>
+      <label for="owner-search">Owner:</label>
       <ng-select id="owner-search" name="owner-search" #ownerSearch [(ngModel)]="searchParameter.ownerId">
         <ng-option *ngFor="let owner of owners$ | async" [value]="owner.id">
           {{owner.firstname}} {{owner.surname}}

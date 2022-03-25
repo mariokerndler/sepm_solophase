@@ -27,15 +27,15 @@ export class HorseFormComponent implements OnInit {
 
   formSubmitButtonText: string;
 
-  owners$: Observable<OwnerDto[]>;
+  owners: Observable<OwnerDto[]>;
 
-  dams$: Observable<HorseDto[]>;
+  dams: Observable<HorseDto[]>;
+  damSearchTerms = new Subject<string>();
   isLoadingDam = false;
-  damSearchTerms$ = new Subject<string>();
 
-  sires$: Observable<HorseDto[]>;
+  sires: Observable<HorseDto[]>;
+  sireSearchTerms = new Subject<string>();
   isLoadingSire = false;
-  sireSearchTerms$ = new Subject<string>();
 
   createAnother = false;
 
@@ -82,10 +82,16 @@ export class HorseFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    (this.isUpdateForm()
-      ? this.horseService.update(this.horseId, this.model)
-      : this.horseService.create(this.model)
-    ).subscribe( (_) => {
+    let horseDtoObservable: Observable<HorseDto>;
+
+    if(this.isUpdateForm()) {
+      horseDtoObservable = this.horseService.update(this.horseId, this.model);
+    }
+    else {
+      horseDtoObservable = this.horseService.create(this.model);
+    }
+
+    horseDtoObservable.subscribe( (_) => {
       if(this.createAnother) {
         form.resetForm();
       }
@@ -113,20 +119,20 @@ export class HorseFormComponent implements OnInit {
   private onModelLoaded(model: AddUpdateHorseDto) {
     this.model = model;
 
-    this.owners$ = this.ownerService.getAll();
+    this.owners = this.ownerService.getAll();
 
-    this.dams$ = this.searchService
+    this.dams = this.searchService
       .registeredSearch(
-        this.damSearchTerms$,
+        this.damSearchTerms,
         loading => this.isLoadingDam = loading,
         searchTerm => this.horseService
           .search(HorseFormComponent.getFilter(Gender.female, searchTerm)),
         this.loadDefaultHorses(Gender.female)
       );
 
-    this.sires$ = this.searchService
+    this.sires = this.searchService
       .registeredSearch(
-        this.sireSearchTerms$,
+        this.sireSearchTerms,
         loading => this.isLoadingSire = loading,
         searchTerm => this.horseService
           .search(HorseFormComponent.getFilter(Gender.male, searchTerm)),

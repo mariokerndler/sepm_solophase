@@ -24,11 +24,10 @@ export class OwnerCreationComponent {
   ) { }
 
   onSubmit(form: NgForm) {
-    console.log(this.model);
     this.ownerService.create(this.model)
       .subscribe( (_) => {
         if(this.createAnother) {
-         form.resetForm();
+          form.resetForm();
         }
         else {
           this.navigateToOwnerList();

@@ -1,5 +1,5 @@
 51822845 - Mario Kerndler
-Gesamtsumme der Arbeitszeit: 45h
+Gesamtsumme der Arbeitszeit: 51h
 h
 Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 11.03.2022 - 3h    - [Preperations]    	- Getting comfortable with the template and get informations about spring boot/angular.
@@ -18,3 +18,4 @@ Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 24.03.2022 - 1h	   - [US8]		- Added owner creation form to the frontend.
 24.03.2022 - 3h	   - [US10]		- Implemented family tree view for horses.
 24.03.2022 - 2h	   - [TS14]		- Implemented various unit and integration tests.
+25.03.2022 - 1h	   - [Cleanup]		- Removes unused code and improved visability on some frontend elements.
