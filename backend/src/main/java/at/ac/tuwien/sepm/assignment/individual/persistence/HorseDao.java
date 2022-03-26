@@ -29,6 +29,16 @@ public interface HorseDao {
     Horse getById(Long id);
 
     /**
+     * Retrieves the {@link Horse horse} with the given {@link Horse#getId() id} from the persistent data store with a certain depth.
+     *
+     * @param id The {@link Horse#getId() id} of the {@link Horse horse} to return.
+     * @param numberOfGenerations The depth that will be fetched.
+     *
+     * @return The specified {@link Horse}.
+     */
+    Horse getById(Long id, int numberOfGenerations);
+
+    /**
      * Create a new {@link Horse horse} in the persistent data store.
      *
      * @param horse The {@link Horse horse} that will be created.

@@ -43,7 +43,7 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public HorseDto getHorseById(Long id, int numberOfGeneration) {
         log.trace("calling getHorseById() ...");
-        var horse = dao.getById(id);
+        var horse = dao.getById(id, numberOfGeneration);
         log.info("Retrieved horse with id='{}'", horse.getId());
         return mapper.entityToDto(horse, numberOfGeneration);
     }
@@ -94,7 +94,7 @@ public class HorseServiceImpl implements HorseService {
     private void setOwner(Horse horse, Long ownerId) { setEntityById(ownerId, ownerDao::getById, horse::setOwner);}
 
     private <T> void setEntityById(Long id, Function<Long, T> getter, Consumer<T> setter) {
-        var entity = (id != null && id != 0) ? getter.apply(id) : null;
+        var entity = (id != null) ? getter.apply(id) : null;
         setter.accept(entity);
     }
 }

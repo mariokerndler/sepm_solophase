@@ -58,6 +58,11 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse getById(Long id) {
+        return getById(id, 0);
+    }
+
+    @Override
+    public Horse getById(Long id, int numberOfGenerations) {
         log.trace("calling getById() ...");
 
         try {
@@ -72,13 +77,17 @@ public class HorseJdbcDao implements HorseDao {
                 horse.setOwner(ownerDao.getById(horse.getOwnerId()));
             }
 
-            if(horse.getDamId() != null) {
-                horse.setDam(getById(horse.getDamId()));
+            if(numberOfGenerations > 0) {
+                numberOfGenerations--;
+                if(horse.getDamId() != null) {
+                    horse.setDam(getById(horse.getDamId(), numberOfGenerations));
+                }
+
+                if(horse.getSireId() != null) {
+                    horse.setSire(getById(horse.getSireId(), numberOfGenerations));
+                }
             }
 
-            if(horse.getSireId() != null) {
-                horse.setSire(getById(horse.getSireId()));
-            }
 
             return horse;
         } catch (DataAccessException e) {
@@ -93,43 +102,7 @@ public class HorseJdbcDao implements HorseDao {
         log.trace("calling create() ...");
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(conn -> {
-            PreparedStatement ps = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, horse.getName());
-
-            if(horse.getDescription() != null) {
-                ps.setString(2, horse.getDescription());
-            }
-            else {
-                ps.setNull(2, Types.VARCHAR);
-            }
-
-            ps.setDate(3, Date.valueOf(horse.getBirthdate()));
-            ps.setString(4, horse.getGender().toString());
-
-            if(horse.getOwnerId() != null) {
-                ps.setLong(5, horse.getOwnerId());
-            }
-            else {
-                ps.setNull(5, Types.BIGINT);
-            }
-
-            if(horse.getDamId() != null) {
-                ps.setLong(6, horse.getDamId());
-            }
-            else {
-                ps.setNull(6, Types.BIGINT);
-            }
-
-            if(horse.getSire() != null) {
-                ps.setLong(7, horse.getSireId());
-            }
-            else {
-                ps.setNull(7, Types.BIGINT);
-            }
-
-            return ps;
-        }, keyHolder);
+        jdbcTemplate.update(conn -> createPreparedStatement(horse, conn, SQL_INSERT), keyHolder);
 
         horse.setId(((Number) Objects.requireNonNull(keyHolder.getKeys()).get("id")).longValue());
         return horse;
@@ -142,41 +115,9 @@ public class HorseJdbcDao implements HorseDao {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
-            PreparedStatement ps = conn.prepareStatement(SQL_UPDATE, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, horse.getName());
-
-            if(horse.getDescription() != null) {
-                ps.setString(2, horse.getDescription());
-            }
-            else {
-                ps.setNull(2, Types.VARCHAR);
-            }
-
-            ps.setDate(3, Date.valueOf(horse.getBirthdate()));
-            ps.setString(4, horse.getGender().toString());
-
-            if(horse.getOwnerId() != null) {
-                ps.setLong(5, horse.getOwnerId());
-            }
-            else {
-                ps.setNull(5, Types.BIGINT);
-            }
-
-            if(horse.getDamId() != null) {
-                ps.setLong(6, horse.getDamId());
-            }
-            else {
-                ps.setNull(6, Types.BIGINT);
-            }
-
-            if(horse.getSire() != null) {
-                ps.setLong(7, horse.getSireId());
-            }
-            else {
-                ps.setNull(7, Types.BIGINT);
-            }
-
+            var ps = createPreparedStatement(horse, conn, SQL_UPDATE);
             ps.setLong(8, horse.getId());
+
             return ps;
         }, keyHolder);
 
@@ -208,6 +149,43 @@ public class HorseJdbcDao implements HorseDao {
 
         var horse = jdbcTemplate.queryForObject(SQL_SELECT_BY_ID, BeanPropertyRowMapper.newInstance(Horse.class), id);
         return Optional.ofNullable(horse);
+    }
+
+    private PreparedStatement createPreparedStatement(Horse horse, Connection conn, String sqlStatement) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS);
+        ps.setString(1, horse.getName());
+
+        if(horse.getDescription() != null) {
+            ps.setString(2, horse.getDescription());
+        }
+        else {
+            ps.setNull(2, Types.VARCHAR);
+        }
+
+        ps.setDate(3, Date.valueOf(horse.getBirthdate()));
+        ps.setString(4, horse.getGender().toString());
+
+        if(horse.getOwnerId() != null) {
+            ps.setLong(5, horse.getOwnerId());
+        }
+        else {
+            ps.setNull(5, Types.BIGINT);
+        }
+
+        if(horse.getDamId() != null) {
+            ps.setLong(6, horse.getDamId());
+        }
+        else {
+            ps.setNull(6, Types.BIGINT);
+        }
+
+        if(horse.getSire() != null) {
+            ps.setLong(7, horse.getSireId());
+        }
+        else {
+            ps.setNull(7, Types.BIGINT);
+        }
+        return ps;
     }
 
     private void clearDamReference(Long id) {

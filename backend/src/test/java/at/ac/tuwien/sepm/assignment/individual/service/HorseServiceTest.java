@@ -3,11 +3,8 @@ package at.ac.tuwien.sepm.assignment.individual.service;
 import at.ac.tuwien.sepm.assignment.individual.dto.AddUpdateHorseDto;
 import at.ac.tuwien.sepm.assignment.individual.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import java.util.List;
-
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.randomdata.RandomHorseGenerator;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,10 +82,10 @@ public class HorseServiceTest {
     sire.setDam(sireDam);
     sire.setDamId(sireDam.getId());
 
-    when(horseDao.getById(child.getId())).thenReturn(child);
-    when(horseDao.getById(sire.getId())).thenReturn(sire);
-    when(horseDao.getById(sireDam.getId())).thenReturn(sireDam);
-    when(horseDao.getById(sireSire.getId())).thenReturn(sireSire);
+    when(horseDao.getById(child.getId(), 2)).thenReturn(child);
+    when(horseDao.getById(sire.getId(), 2)).thenReturn(sire);
+    when(horseDao.getById(sireDam.getId(), 2)).thenReturn(sireDam);
+    when(horseDao.getById(sireSire.getId(), 2)).thenReturn(sireSire);
 
     var childDto = horseService.getHorseById(child.getId(), 2);
     assertThat(childDto).isNotNull();

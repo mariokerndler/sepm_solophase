@@ -46,6 +46,17 @@ public class HorseMapper {
         log.trace("calling dtoToEntity() ...");
 
         Horse horse = new Horse();
+        updateHorseFromDto(dto, horse);
+        return horse;
+    }
+
+    public void updateFromDto(Horse horse, AddUpdateHorseDto updateHorseDto) {
+        log.trace("calling updateFromDto() ...");
+
+        updateHorseFromDto(updateHorseDto, horse);
+    }
+
+    private void updateHorseFromDto(AddUpdateHorseDto dto, Horse horse) {
         horse.setName(dto.getName());
         horse.setDescription(dto.getDescription());
         horse.setBirthdate(dto.getBirthdate());
@@ -53,18 +64,5 @@ public class HorseMapper {
         horse.setOwnerId(dto.getOwnerId());
         horse.setSireId(dto.getSireId());
         horse.setDamId(dto.getDamId());
-        return horse;
-    }
-
-    public void updateFromDto(Horse horse, AddUpdateHorseDto updateHorseDto) {
-        log.trace("calling updateFromDto() ...");
-
-        horse.setName(updateHorseDto.getName());
-        horse.setDescription(updateHorseDto.getDescription());
-        horse.setBirthdate(updateHorseDto.getBirthdate());
-        horse.setGender(updateHorseDto.getGender());
-        horse.setOwnerId(updateHorseDto.getOwnerId());
-        horse.setSireId(updateHorseDto.getSireId());
-        horse.setDamId(updateHorseDto.getDamId());
     }
 }
