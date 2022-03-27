@@ -1,12 +1,12 @@
 <div id="node-container" *ngIf="horse">
   <div id="horse-row" class="d-flex flex-row align-items-center justify-content-between">
-    <div (click)="$event.stopPropagation()" class="no-pointer">
+    <div>
       <button class="btn btn-secondary" type="button" (click)="onToggleCollapse()" *ngIf="horse.dam || horse.sire">
         {{expanded ? '-' : '+'}}
       </button>
       <span>{{horse.name}}</span>
     </div>
-    <div (click)="$event.stopPropagation()" class="no-pointer">
+    <div>
       {{horse.birthdate}}
       <button class="btn btn-primary ms-1" type="button" (click)="onRowClick(horse.id)">View</button>
       <button class="btn btn-danger ms-1" (click)="delete(horse.id)">Delete</button>

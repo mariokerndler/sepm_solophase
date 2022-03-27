@@ -30,7 +30,7 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   searchParameter: HorseSearchDto = new HorseSearchDto();
 
-  owners$: Observable<OwnerDto[]>;
+  owners: Observable<OwnerDto[]>;
 
   private routeSearchQuerySubscription: Subscription;
   private searchSubscription: Subscription;
@@ -48,7 +48,7 @@ export class HorseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.reloadHorses();
-    this.owners$ = this.ownerService.getAll();
+    this.owners = this.ownerService.getAll();
 
     this.routeSearchQuerySubscription = this.route.queryParams
       .subscribe( (params) => {

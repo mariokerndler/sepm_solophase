@@ -1,5 +1,5 @@
 51822845 - Mario Kerndler
-Gesamtsumme der Arbeitszeit: 53h
+Gesamtsumme der Arbeitszeit: 54h
 
 Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 11.03.2022 - 3h    - [Preperations]    	- Getting comfortable with the template and get informations about spring boot/angular.
@@ -20,3 +20,4 @@ Datum 	   - Dauer - Bearbeitete Story 	- Kommentar
 24.03.2022 - 2h	   - [TS14]		- Implemented various unit and integration tests.
 25.03.2022 - 1h	   - [Cleanup]		- Removes unused code and improved visability on some frontend elements.
 26.03.2022 - 2h	   - [Cleanup]		- Refactored code and improved getById() to not fetch all the parents, if not needed.
+27.03.2022 - 1h	   - [Cleanup]      	- Removed unused CSS classes and fixed variable names. 

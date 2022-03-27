@@ -32,7 +32,7 @@
     <div class="search-row">
       <label for="owner-search">Owner:</label>
       <ng-select id="owner-search" name="owner-search" #ownerSearch [(ngModel)]="searchParameter.ownerId">
-        <ng-option *ngFor="let owner of owners$ | async" [value]="owner.id">
+        <ng-option *ngFor="let owner of owners | async" [value]="owner.id">
           {{owner.firstname}} {{owner.surname}}
         </ng-option>
       </ng-select>
